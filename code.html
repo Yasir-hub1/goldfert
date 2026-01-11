@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GolferT - Fertilizantes Agrícolas</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Open+Sans:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#F59E0B", // Amber-500 equivalent for buttons
+                        brand: {
+                            light: "#15803d", // Green-700
+                            dark: "#14532d",  // Green-900
+                        },
+                        "background-light": "#F9FAFB", // Gray-50
+                        "background-dark": "#111827", // Gray-900
+                        "surface-light": "#FFFFFF",
+                        "surface-dark": "#1F2937", // Gray-800
+                        "text-main-light": "#1F2937",
+                        "text-main-dark": "#F3F4F6",
+                        "text-muted-light": "#4B5563",
+                        "text-muted-dark": "#9CA3AF",
+                    },
+                    fontFamily: {
+                        display: ["Montserrat", "sans-serif"],
+                        body: ["Open Sans", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                    },
+                },
+            },
+        };
+    </script>
+<style>
+        .wave-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+            transform: rotate(180deg);
+        }
+        .wave-container svg {
+            position: relative;
+            display: block;
+            width: calc(138% + 1.3px);
+            height: 60px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-main-light dark:text-text-main-dark font-body antialiased transition-colors duration-300">
+<nav class="sticky top-0 z-50 bg-surface-light dark:bg-surface-dark shadow-md">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between h-20">
+<div class="flex items-center">
+<div class="flex-shrink-0 flex items-center gap-2">
+<span class="material-icons-outlined text-brand-light dark:text-green-400 text-4xl">eco</span>
+<div>
+<span class="font-display font-bold text-2xl text-brand-dark dark:text-green-400 tracking-tight">golfer<span class="text-primary">T</span></span>
+<p class="text-[0.6rem] uppercase tracking-widest text-text-muted-light dark:text-text-muted-dark leading-none">Fertilizantes</p>
+</div>
+</div>
+</div>
+<div class="hidden md:flex items-center space-x-8">
+<a class="font-semibold text-brand-light dark:text-green-400 border-b-2 border-brand-light dark:border-green-400" href="#">Inicio</a>
+<a class="font-medium text-text-muted-light dark:text-gray-300 hover:text-brand-light dark:hover:text-green-400 transition" href="#">Productos</a>
+<a class="font-medium text-text-muted-light dark:text-gray-300 hover:text-brand-light dark:hover:text-green-400 transition" href="#">Soluciones Agrícolas</a>
+<a class="font-medium text-text-muted-light dark:text-gray-300 hover:text-brand-light dark:hover:text-green-400 transition" href="#">Nosotros</a>
+<a class="bg-primary hover:bg-yellow-600 text-white font-bold py-2 px-6 rounded-md shadow-lg transition transform hover:-translate-y-0.5" href="#">
+                        Contacto
+                    </a>
+</div>
+<div class="flex items-center md:hidden">
+<button class="text-gray-500 dark:text-gray-200 hover:text-gray-600 focus:outline-none" type="button">
+<span class="material-icons-outlined text-3xl">menu</span>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<div class="relative bg-gray-900 overflow-hidden">
+<div class="absolute inset-0">
+<img alt="Farmer checking crops in a sunny field" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiBvOTS1tLleN7IKA13QNqa8uOCTqL4zsb6aQ4U44aONMgB5R5rg7Am_lpynu1wAhnM-538pmtbIGsesPCaPzrw448xoErmClmU-UmjguyjITRq8dcKVfVkzA21_gUDFGyt_mkXPsmNZWXCZjFCNy9C1kB8-Yo90bvdeM5pxpF1TRH8ldyEOoukhsjHNvjxyHdLryfK5Khe1OIioHl5FK_Iin_MPscJhKtxVnScjbDDO6B8q6YaFAtbZmkgyVhsNSijs-ZuxwujU5T"/>
+<div class="absolute inset-0 bg-gradient-to-r from-brand-dark/90 to-transparent dark:from-black/90 mix-blend-multiply"></div>
+</div>
+<div class="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8 h-[600px] flex flex-col justify-center">
+<h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl font-display mb-6 shadow-black drop-shadow-lg">
+                Nutriendo el Campo, <br/>
+<span class="text-primary">Impulsando tu Cosecha</span>
+</h1>
+<p class="mt-2 text-xl text-gray-100 max-w-3xl font-light">
+                Fertilizantes de Alta Eficiencia diseñados tecnológicamente para maximizar el rendimiento de tus cultivos.
+            </p>
+<div class="mt-10">
+<a class="bg-primary hover:bg-yellow-600 text-white font-bold py-3 px-8 rounded-md shadow-lg transition transform hover:-translate-y-1 text-lg" href="#">
+                    Ver Productos
+                </a>
+</div>
+</div>
+<div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none rotate-180">
+<svg class="relative block w-[calc(100%+1.3px)] h-[60px]" data-name="Layer 1" preserveAspectRatio="none" viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg">
+<path class="fill-background-light dark:fill-background-dark" d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path>
+</svg>
+</div>
+</div>
+<section class="py-16 bg-background-light dark:bg-background-dark">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-left mb-12 flex items-center">
+<h2 class="text-3xl font-extrabold text-brand-dark dark:text-white font-display">¿Qué Hacemos?</h2>
+<div class="flex-grow h-px bg-gray-300 dark:bg-gray-700 ml-6"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl shadow-md p-8 text-center border-t-4 border-brand-light dark:border-green-500 hover:shadow-xl transition duration-300">
+<div class="w-16 h-16 bg-brand-light dark:bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6 text-white shadow-lg">
+<span class="material-icons-outlined text-3xl">spa</span>
+</div>
+<h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 font-display">Fertilizantes Foliares</h3>
+<p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                        Formulación y desarrollo de fertilizantes foliares efectivos para una rápida absorción de nutrientes.
+                    </p>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl shadow-md p-8 text-center border-t-4 border-brand-light dark:border-green-500 hover:shadow-xl transition duration-300 transform md:-translate-y-4">
+<div class="w-16 h-16 bg-brand-light dark:bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6 text-white shadow-lg">
+<span class="material-icons-outlined text-3xl">science</span>
+</div>
+<h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 font-display">Nutrición Especializada</h3>
+<p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                        Soluciones adaptadas a cada cultivo y etapa de crecimiento para maximizar el potencial genético.
+                    </p>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl shadow-md p-8 text-center border-t-4 border-brand-light dark:border-green-500 hover:shadow-xl transition duration-300">
+<div class="w-16 h-16 bg-brand-light dark:bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6 text-white shadow-lg">
+<span class="material-icons-outlined text-3xl">local_florist</span>
+</div>
+<h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 font-display">Bioestimulantes Agrícolas</h3>
+<p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                        Tecnología avanzada para potenciar el crecimiento y combatir el estrés abiótico en las plantas.
+                    </p>
+</div>
+</div>
+</div>
+</section>
+<section class="py-12 bg-white dark:bg-gray-800">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-10">
+<h2 class="text-2xl font-bold text-brand-dark dark:text-green-400 font-display">Beneficios para tu Cultivo</h2>
+<div class="w-24 h-1 bg-primary mx-auto mt-4 rounded"></div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="flex flex-col items-center text-center p-4">
+<div class="p-3 bg-yellow-100 dark:bg-yellow-900/30 rounded-full mb-3 text-primary">
+<span class="material-icons-outlined text-3xl">trending_up</span>
+</div>
+<h4 class="font-bold text-gray-900 dark:text-white mb-2">Mayor Rendimiento</h4>
+<p class="text-xs text-gray-500 dark:text-gray-400">Aumenta la productividad de tus cosechas significativamente.</p>
+</div>
+<div class="flex flex-col items-center text-center p-4">
+<div class="p-3 bg-green-100 dark:bg-green-900/30 rounded-full mb-3 text-brand-light dark:text-green-400">
+<span class="material-icons-outlined text-3xl">water_drop</span>
+</div>
+<h4 class="font-bold text-gray-900 dark:text-white mb-2">Mejor Absorción</h4>
+<p class="text-xs text-gray-500 dark:text-gray-400">Nutrientes de rápida asimilación y transporte sistémico.</p>
+</div>
+<div class="flex flex-col items-center text-center p-4">
+<div class="p-3 bg-green-100 dark:bg-green-900/30 rounded-full mb-3 text-brand-light dark:text-green-400">
+<span class="material-icons-outlined text-3xl">shield</span>
+</div>
+<h4 class="font-bold text-gray-900 dark:text-white mb-2">Más Resistencia</h4>
+<p class="text-xs text-gray-500 dark:text-gray-400">Fortalece tus plantas contra el estrés climático y plagas.</p>
+</div>
+<div class="flex flex-col items-center text-center p-4">
+<div class="p-3 bg-yellow-100 dark:bg-yellow-900/30 rounded-full mb-3 text-primary">
+<span class="material-icons-outlined text-3xl">emoji_nature</span>
+</div>
+<h4 class="font-bold text-gray-900 dark:text-white mb-2">Nutrición Completa</h4>
+<p class="text-xs text-gray-500 dark:text-gray-400">Equilibrio ideal de macro y micronutrientes esenciales.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="py-20 relative bg-brand-dark dark:bg-black">
+<div class="absolute top-0 left-0 w-full overflow-hidden leading-none">
+<svg class="relative block w-[calc(100%+1.3px)] h-[50px]" data-name="Layer 1" preserveAspectRatio="none" viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg">
+<path class="fill-background-light dark:fill-background-dark" d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path>
+</svg>
+</div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+<div class="text-center mb-16">
+<h2 class="text-3xl font-extrabold text-white font-display inline-block border-b-2 border-primary pb-2">Líneas de Productos</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="bg-white dark:bg-surface-dark rounded-xl overflow-hidden shadow-2xl transform transition hover:scale-105">
+<div class="h-48 bg-gray-100 dark:bg-gray-700 flex items-center justify-center p-4">
+<img alt="Botella de fertilizante Golferfol" class="h-full object-contain drop-shadow-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkDLa8SSIg37Y0CkBAebzh-8x6huADkvJ6w6ZGzn9iGh0hFHlNu6-ibGjvUwrP8qYRWrTAvIBpRP4yDYCBk8G014hyo-t93Wz4-Z_oQYdM2DhYUAIZ_bg_AZadxKWjQH3NYhqqB7-78GEgBTkBQGT-S_CXrSdqC90pSIcnkicItLH5KaDYwN4xp7YtFnozzNm5xDZvrcynINY81ybesKfMfoVQJMASaMta4Ux5dS_ilH5D3H1mLuPVcsQRMC6YY_1JnpO7VVaf-TWk"/>
+</div>
+<div class="p-6 text-center">
+<h3 class="text-lg font-bold text-brand-dark dark:text-white font-display">GOLFERFOL</h3>
+<p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Línea Foliar Premium</p>
+<button class="bg-primary hover:bg-yellow-600 text-white font-bold py-2 px-6 rounded w-full">Ver Más</button>
+</div>
+</div>
+<div class="bg-white dark:bg-surface-dark rounded-xl overflow-hidden shadow-2xl transform transition hover:scale-105">
+<div class="h-48 bg-gray-100 dark:bg-gray-700 flex items-center justify-center p-4">
+<img alt="Botella de fertilizante Golfer Reax" class="h-full object-contain drop-shadow-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaM7CAHA1r6KvtpZP4dRXqg5-Hot9FCibou5blzrZp2z_MRs6QQGe08Fi4Q5FDM427nYTUyCDtavd5zBbpxAcWDrhKuqa15bG26Ze1exwccE-6Wq9FoiOg5Crrl7p69wFrTTmyt3jhFjpTnp3L1Dc1u7OTQXdPQeCIfJd7STSt-zpwp_xJeDQ3dLaG_L0BuQ4FhdP3CdUu3vvy49mXrJnLADmFwBsHgq7Dqk162Jr4bDByWJ2ce6_tiU9LKPCpRGtno-c2dyPbCYAa"/>
+</div>
+<div class="p-6 text-center">
+<h3 class="text-lg font-bold text-brand-dark dark:text-white font-display">GOLFER REAX</h3>
+<p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Bioestimulantes Avanzados</p>
+<button class="bg-primary hover:bg-yellow-600 text-white font-bold py-2 px-6 rounded w-full">Ver Más</button>
+</div>
+</div>
+<div class="bg-white dark:bg-surface-dark rounded-xl overflow-hidden shadow-2xl transform transition hover:scale-105">
+<div class="h-48 bg-gray-100 dark:bg-gray-700 flex items-center justify-center p-4">
+<img alt="Botella de fertilizante Golfer Mix" class="h-full object-contain drop-shadow-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCffLimxh026eZmgxaJ9JFZ5RNAQ-i6MUFpmsSKWBOj5vGXJJHRSwjSkVeoe0OsyIERNt8ulSSai4n36IpElpffxwKY8uKLuWCVuJvnZw1h3uIj-L-HcvayrkXz_h0I2Jo9gkSCZODe2fKOfmEfiVZ7qvC7lOjitNLk-CLm3HdP_kY8gIaD2l1TPnXwJH0EyGeItzPIOmi2VynG5PWSQXpM7bwpQNcwTQWcl0-r_Bd1PK7S6dvEhikN7TIZOwmCwk05M_KaYyPtvOd2"/>
+</div>
+<div class="p-6 text-center">
+<h3 class="text-lg font-bold text-brand-dark dark:text-white font-display">GOLFER.MIX</h3>
+<p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Correctores de Carencias</p>
+<button class="bg-primary hover:bg-yellow-600 text-white font-bold py-2 px-6 rounded w-full">Ver Más</button>
+</div>
+</div>
+</div>
+</div>
+<div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none rotate-180">
+<svg class="relative block w-[calc(100%+1.3px)] h-[50px]" data-name="Layer 1" preserveAspectRatio="none" viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg">
+<path class="fill-background-light dark:fill-background-dark" d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z"></path>
+</svg>
+</div>
+</section>
+<section class="py-16 bg-background-light dark:bg-background-dark overflow-hidden">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-12">
+<h2 class="text-3xl font-extrabold text-brand-dark dark:text-white font-display">Por Qué Elegirnos</h2>
+<div class="w-16 h-1 bg-primary mx-auto mt-2"></div>
+</div>
+<div class="relative">
+<div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+<img alt="Farm texture" class="w-full h-full object-cover rounded-3xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5SvUaCEekJeb2oNL_lfioKRug1C07cM93xrm207mQFxlxDldVPmktdA7O8EuBESUUdbwsKoiuq67dmrRwIQSqCXNhZPFe3fgsyJ4A0xZZrHW9szRSCiXvTgEM2z2RwnWbvGxSKN3LBv2AYLApFGutJUbpEAknrCARLzcpyV3LkSOaQIBvEh0g8J4l8OV4wlmwykdqDiL_qb91_rNyQf622XkdooiMTVbIwNIyOmasJO2yZg126HC15QuAMWpHiYk6cUwPT-VS9cW2"/>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+<div class="relative">
+<div class="absolute inset-0 bg-primary/20 rounded-3xl transform -rotate-3 z-0"></div>
+<img alt="Smiling agronomist with hat" class="relative z-10 rounded-3xl shadow-2xl border-4 border-white dark:border-gray-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCe4eAQWrlakC7xkEOvRJOPxLfzWmmjUsmR2b-39otZLoYnTsM_taWk5HoKMDlSmCxdOGEqM3dz9x60N0TQBSLO5HU4kAk0sPy_rR23_-hjtff5tmBgUO5qW5kDfwIomT2A1l5PVrFmfcuaZndxbQnYd6JvlGDSFc9yXwDEhYmoGavioVEouTpfsPAY8Kwn-lpriUu1BR6MQieUt1IEyJOh_PNHneP8F3KYFANTmeMVQYqwps-7ZgyL7Xv5zpRTrU7xMHDl-8Z4Rt9B"/>
+</div>
+<div class="space-y-10">
+<div class="flex">
+<div class="flex-shrink-0">
+<div class="flex items-center justify-center h-14 w-14 rounded-full bg-brand-dark dark:bg-green-800 text-white border-2 border-primary">
+<span class="material-icons-outlined">verified</span>
+</div>
+</div>
+<div class="ml-4">
+<h3 class="text-lg leading-6 font-bold text-gray-900 dark:text-white font-display">Experiencia y Calidad</h3>
+<p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                                    Más de 20 años formulando soluciones que cumplen con los estándares internacionales más exigentes.
+                                </p>
+</div>
+</div>
+<div class="flex">
+<div class="flex-shrink-0">
+<div class="flex items-center justify-center h-14 w-14 rounded-full bg-brand-dark dark:bg-green-800 text-white border-2 border-primary">
+<span class="material-icons-outlined">support_agent</span>
+</div>
+</div>
+<div class="ml-4">
+<h3 class="text-lg leading-6 font-bold text-gray-900 dark:text-white font-display">Asesoría Profesional</h3>
+<p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                                    Acompañamiento técnico constante por ingenieros agrónomos expertos en nutrición vegetal.
+                                </p>
+</div>
+</div>
+<div class="flex">
+<div class="flex-shrink-0">
+<div class="flex items-center justify-center h-14 w-14 rounded-full bg-brand-dark dark:bg-green-800 text-white border-2 border-primary">
+<span class="material-icons-outlined">lightbulb</span>
+</div>
+</div>
+<div class="ml-4">
+<h3 class="text-lg leading-6 font-bold text-gray-900 dark:text-white font-display">Innovación Constante</h3>
+<p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                                    Investigación continua para desarrollar moléculas que maximicen la eficiencia de cada gota.
+                                </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-16 bg-white dark:bg-gray-900 relative">
+<div class="absolute top-0 left-0 w-full h-12 bg-gradient-to-b from-gray-100 dark:from-gray-800 to-transparent pointer-events-none"></div>
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-10">
+<h2 class="text-3xl font-extrabold text-brand-dark dark:text-white font-display">Contáctanos</h2>
+<p class="mt-4 text-lg text-gray-600 dark:text-gray-300">
+                    ¿Listo para impulsar tu cosecha? <span class="font-bold text-brand-light dark:text-green-400">¡Hablemos!</span>
+</p>
+</div>
+<form class="bg-gray-50 dark:bg-surface-dark shadow-xl rounded-2xl p-8 sm:p-12 border border-gray-100 dark:border-gray-700">
+<div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
+<div class="sm:col-span-2">
+<label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="name">Nombre Completo</label>
+<div class="mt-1">
+<input class="py-3 px-4 block w-full shadow-sm focus:ring-primary focus:border-primary border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-md" id="name" name="name" placeholder="Juan Pérez" type="text"/>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="email">Correo Electrónico</label>
+<div class="mt-1">
+<input class="py-3 px-4 block w-full shadow-sm focus:ring-primary focus:border-primary border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-md" id="email" name="email" placeholder="correo@ejemplo.com" type="email"/>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="phone">Teléfono</label>
+<div class="mt-1">
+<input class="py-3 px-4 block w-full shadow-sm focus:ring-primary focus:border-primary border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-md" id="phone" name="phone" placeholder="+54 11 ..." type="text"/>
+</div>
+</div>
+<div class="sm:col-span-2">
+<label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="message">Mensaje</label>
+<div class="mt-1">
+<textarea class="py-3 px-4 block w-full shadow-sm focus:ring-primary focus:border-primary border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-md" id="message" name="message" placeholder="¿En qué podemos ayudarte?" rows="4"></textarea>
+</div>
+</div>
+<div class="sm:col-span-2">
+<button class="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-bold text-white bg-brand-light dark:bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors" type="submit">
+                            Enviar Mensaje
+                            <span class="material-icons-outlined ml-2">send</span>
+</button>
+</div>
+</div>
+</form>
+</div>
+</section>
+<footer class="bg-brand-dark dark:bg-black text-white">
+<div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 border-t border-gray-800">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+<div>
+<div class="flex items-center justify-center md:justify-start gap-2 mb-4">
+<span class="material-icons-outlined text-primary text-3xl">eco</span>
+<span class="font-display font-bold text-xl tracking-tight">golfer<span class="text-primary">T</span></span>
+</div>
+<p class="text-gray-400 text-sm">
+                        Comprometidos con el desarrollo agrícola sostenible a través de la innovación y la calidad.
+                    </p>
+</div>
+<div>
+<h3 class="text-sm font-semibold text-gray-200 tracking-wider uppercase mb-4">Enlaces Rápidos</h3>
+<ul class="space-y-2">
+<li><a class="text-base text-gray-400 hover:text-white" href="#">Productos</a></li>
+<li><a class="text-base text-gray-400 hover:text-white" href="#">Soluciones</a></li>
+<li><a class="text-base text-gray-400 hover:text-white" href="#">Contacto</a></li>
+</ul>
+</div>
+<div>
+<h3 class="text-sm font-semibold text-gray-200 tracking-wider uppercase mb-4">Legal</h3>
+<ul class="space-y-2">
+<li><a class="text-base text-gray-400 hover:text-white" href="#">Privacidad</a></li>
+<li><a class="text-base text-gray-400 hover:text-white" href="#">Términos</a></li>
+</ul>
+</div>
+</div>
+<div class="mt-8 border-t border-gray-800 pt-8 text-center">
+<p class="text-base text-gray-400">© 2023 GolferT Fertilizantes. Todos los derechos reservados.</p>
+</div>
+</div>
+</footer>
+
+</body></html>
