@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50">
     <!-- Header con navegación -->
     <header class="bg-white/80 backdrop-blur-lg border-b border-gray-200/50 shadow-sm sticky top-0 z-40">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16 md:h-20">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
@@ -42,7 +42,7 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
       <!-- Estadísticas -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6 mb-6 md:mb-8">
         <div class="bg-white/80 backdrop-blur-lg rounded-xl shadow-lg p-5 border border-white/20 transform transition-all duration-200 hover:scale-105 hover:shadow-xl">
           <div class="flex items-center justify-between">
             <div>
@@ -86,12 +86,30 @@
           <div class="flex items-center justify-between">
             <div>
               <p class="text-sm font-medium text-gray-600 mb-1">Valor Total</p>
-              <p class="text-2xl md:text-3xl font-bold text-indigo-600">${{ totalValue.toFixed(2) }}</p>
+              <p class="text-2xl md:text-3xl font-bold text-indigo-600">Bs. {{ totalValue.toFixed(2) }}</p>
             </div>
             <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
               <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
+            </div>
+          </div>
+        </div>
+        <div
+          @click="showContactsModal = true; fetchContacts()"
+          class="bg-white/80 backdrop-blur-lg rounded-xl shadow-lg p-5 border border-white/20 transform transition-all duration-200 hover:scale-105 hover:shadow-xl cursor-pointer"
+        >
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-600 mb-1">Mensajes</p>
+              <p class="text-2xl md:text-3xl font-bold text-amber-600">{{ unreadContactsCount }}</p>
+              <p class="text-xs text-gray-500 mt-1">{{ unreadContactsCount === 1 ? 'no leído' : 'no leídos' }}</p>
+            </div>
+            <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center relative">
+              <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              <span v-if="unreadContactsCount > 0" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">{{ unreadContactsCount }}</span>
             </div>
           </div>
         </div>
@@ -243,7 +261,7 @@
         <!-- Vista de tabla (desktop) -->
         <div class="bg-white/80 backdrop-blur-lg rounded-xl shadow-lg overflow-hidden border border-white/20 hidden md:block">
         <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200">
+        <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gradient-to-r from-gray-50 to-gray-100/50">
               <tr>
                 <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Foto</th>
@@ -254,18 +272,18 @@
                 <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Etapa</th>
                 <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Estado</th>
                 <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Acciones</th>
-              </tr>
-            </thead>
+            </tr>
+          </thead>
             <TransitionGroup name="table-row" tag="tbody" class="bg-white divide-y divide-gray-200">
                 <tr
                   v-for="product in paginatedProducts"
                   :key="product.id"
                   class="hover:bg-blue-50/50 transition-colors duration-150"
                 >
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <img
-                      v-if="product.foto"
-                      :src="`/storage/${product.foto}`"
+              <td class="px-6 py-4 whitespace-nowrap">
+                <img
+                  v-if="product.foto"
+                  :src="`/storage/${product.foto}`"
                       :alt="product.nombre"
                       class="h-16 w-16 object-cover rounded-lg shadow-md"
                     />
@@ -274,62 +292,62 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                       </svg>
                     </div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
                     <div class="text-sm font-semibold text-gray-900">{{ product.nombre }}</div>
                     <div v-if="product.descripcion" class="text-xs text-gray-500 mt-1 line-clamp-1">{{ product.descripcion }}</div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
                     <div class="text-sm font-bold text-blue-600">${{ product.precio }}</div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-gray-900">{{ product.dosis }}</div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-gray-900">{{ product.cultivo }}</div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-gray-900">{{ product.etapa }}</div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <span
-                      :class="[
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ product.dosis }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ product.cultivo }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ product.etapa }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span
+                  :class="[
                         'px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full',
                         (product.enabled === true || product.enabled === 1)
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-red-100 text-red-800',
-                      ]"
-                    >
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-red-100 text-red-800',
+                  ]"
+                >
                       {{ (product.enabled === true || product.enabled === 1) ? 'Habilitado' : 'Deshabilitado' }}
-                    </span>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div class="flex items-center gap-3">
-                      <button
-                        @click="editProduct(product)"
+                <button
+                  @click="editProduct(product)"
                         class="text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1 group"
                         title="Editar"
-                      >
+                >
                         <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                         </svg>
                         <span class="hidden lg:inline">Editar</span>
-                      </button>
-                      <button
-                        @click="deleteProduct(product.id)"
+                </button>
+                <button
+                  @click="deleteProduct(product.id)"
                         class="text-red-600 hover:text-red-800 transition-colors flex items-center gap-1 group"
                         title="Eliminar"
-                      >
+                >
                         <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
                         <span class="hidden lg:inline">Eliminar</span>
-                      </button>
+                </button>
                     </div>
-                  </td>
-                </tr>
+              </td>
+            </tr>
             </TransitionGroup>
-          </table>
+        </table>
         </div>
         </div>
       </div>
@@ -409,11 +427,11 @@
 
       <!-- Modal de creación/edición -->
       <Transition name="modal">
-        <div
-          v-if="showCreateModal || showEditModal"
+      <div
+        v-if="showCreateModal || showEditModal"
           class="fixed inset-0 bg-black/50 backdrop-blur-sm overflow-y-auto h-full w-full z-50 flex items-center justify-center p-4"
-          @click.self="closeModal"
-        >
+        @click.self="closeModal"
+      >
           <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto transform transition-all">
             <!-- Header del modal -->
             <div class="sticky top-0 bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6 rounded-t-2xl flex items-center justify-between">
@@ -424,8 +442,8 @@
                   </svg>
                 </div>
                 <h3 class="text-xl font-bold">
-                  {{ showEditModal ? 'Editar Producto' : 'Nuevo Producto' }}
-                </h3>
+              {{ showEditModal ? 'Editar Producto' : 'Nuevo Producto' }}
+            </h3>
               </div>
               <button
                 @click="closeModal"
@@ -458,16 +476,16 @@
                     Precio <span class="text-red-500">*</span>
                   </label>
                   <div class="relative">
-                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
-                    <input
-                      v-model="form.precio"
-                      type="number"
-                      step="0.01"
-                      min="0"
-                      required
+                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">Bs.</span>
+                  <input
+                    v-model="form.precio"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    required
                       class="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
                       placeholder="0.00"
-                    />
+                  />
                   </div>
                 </div>
 
@@ -552,12 +570,12 @@
                       </p>
                       <p class="text-xs text-gray-500">PNG, JPG, GIF o WEBP (MAX. 10MB)</p>
                     </div>
-                    <input
-                      type="file"
-                      accept="image/jpeg,image/png,image/jpg,image/gif,image/webp"
-                      @change="handleFileChange"
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/jpg,image/gif,image/webp"
+                  @change="handleFileChange"
                       class="hidden"
-                    />
+                />
                   </label>
                 </div>
                 <div v-if="form.fotoPreview" class="mt-4">
@@ -602,6 +620,107 @@
           </div>
         </div>
       </Transition>
+
+      <!-- Modal de Contactos -->
+      <Transition name="fade">
+        <div
+          v-if="showContactsModal"
+          class="fixed inset-0 bg-black/50 backdrop-blur-sm overflow-y-auto h-full w-full z-50 flex items-center justify-center p-4"
+          @click.self="showContactsModal = false"
+        >
+          <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto transform transition-all">
+            <!-- Header del modal -->
+            <div class="sticky top-0 bg-gradient-to-r from-amber-500 to-amber-600 text-white p-6 rounded-t-2xl flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+      </div>
+                <h3 class="text-xl font-bold">
+                  Mensajes de Contacto
+                </h3>
+                <span v-if="unreadContactsCount > 0" class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                  {{ unreadContactsCount }} {{ unreadContactsCount === 1 ? 'no leído' : 'no leídos' }}
+                </span>
+              </div>
+              <button
+                @click="showContactsModal = false"
+                class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/20 transition-colors"
+              >
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <!-- Contenido del modal -->
+            <div class="p-6">
+              <div v-if="loadingContacts" class="text-center py-12">
+                <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600"></div>
+                <p class="mt-4 text-gray-600">Cargando mensajes...</p>
+              </div>
+              <div v-else-if="contacts.length === 0" class="text-center py-12">
+                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                <p class="mt-4 text-gray-600 font-medium">No hay mensajes de contacto</p>
+              </div>
+              <div v-else class="space-y-4">
+                <div
+                  v-for="contact in contacts"
+                  :key="contact.id"
+                  :class="[
+                    'border rounded-xl p-5 transition-all',
+                    contact.read ? 'bg-gray-50 border-gray-200' : 'bg-amber-50 border-amber-300 shadow-md'
+                  ]"
+                >
+                  <div class="flex items-start justify-between mb-3">
+                    <div class="flex-1">
+                      <div class="flex items-center gap-3 mb-2">
+                        <h4 class="text-lg font-bold text-gray-900">{{ contact.name }}</h4>
+                        <span v-if="!contact.read" class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                          Nuevo
+                        </span>
+                      </div>
+                      <div class="flex flex-wrap gap-4 text-sm text-gray-600">
+                        <div class="flex items-center gap-1">
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                          </svg>
+                          <a :href="`mailto:${contact.email}`" class="hover:text-amber-600 transition-colors">{{ contact.email }}</a>
+                        </div>
+                        <div v-if="contact.phone" class="flex items-center gap-1">
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                          </svg>
+                          <a :href="`tel:${contact.phone}`" class="hover:text-amber-600 transition-colors">{{ contact.phone }}</a>
+                        </div>
+                        <div class="flex items-center gap-1">
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <span>{{ new Date(contact.created_at).toLocaleString('es-ES') }}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <button
+                      v-if="!contact.read"
+                      @click="markAsRead(contact.id)"
+                      class="ml-4 px-3 py-1.5 bg-amber-600 text-white text-sm font-medium rounded-lg hover:bg-amber-700 transition-colors"
+                    >
+                      Marcar como leído
+                    </button>
+                  </div>
+                  <div class="bg-white rounded-lg p-4 border border-gray-200">
+                    <p class="text-gray-700 whitespace-pre-wrap">{{ contact.message }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Transition>
     </div>
   </div>
 </template>
@@ -621,11 +740,15 @@ export default {
     const saving = ref(false);
     const showCreateModal = ref(false);
     const showEditModal = ref(false);
+    const showContactsModal = ref(false);
     const editingId = ref(null);
     const searchQuery = ref('');
     const statusFilter = ref('all');
     const currentPage = ref(1);
     const itemsPerPage = ref(10);
+    const contacts = ref([]);
+    const loadingContacts = ref(false);
+    const unreadContactsCount = ref(0);
 
     const form = reactive({
       nombre: '',
@@ -965,8 +1088,55 @@ export default {
       return pages;
     });
 
+    const fetchContacts = async () => {
+      loadingContacts.value = true;
+      try {
+        const response = await axios.get('/api/contacts', {
+          withCredentials: true,
+        });
+        contacts.value = response.data;
+        updateUnreadCount();
+      } catch (error) {
+        console.error('Error al cargar contactos:', error);
+        toast.error('Error al cargar los mensajes de contacto.');
+      } finally {
+        loadingContacts.value = false;
+      }
+    };
+
+    const updateUnreadCount = async () => {
+      try {
+        const response = await axios.get('/api/contacts/unread-count', {
+          withCredentials: true,
+        });
+        unreadContactsCount.value = response.data.count || 0;
+      } catch (error) {
+        console.error('Error al obtener contador de no leídos:', error);
+      }
+    };
+
+    const markAsRead = async (id) => {
+      try {
+        await axios.put(`/api/contacts/${id}/read`, {}, {
+          withCredentials: true,
+        });
+        const contact = contacts.value.find(c => c.id === id);
+        if (contact) {
+          contact.read = true;
+        }
+        updateUnreadCount();
+        toast.success('Mensaje marcado como leído.');
+      } catch (error) {
+        console.error('Error al marcar como leído:', error);
+        toast.error('Error al actualizar el mensaje.');
+      }
+    };
+
     onMounted(() => {
       fetchProducts();
+      updateUnreadCount();
+      // Actualizar contador cada 30 segundos
+      setInterval(updateUnreadCount, 30000);
     });
 
     return {
@@ -975,6 +1145,7 @@ export default {
       saving,
       showCreateModal,
       showEditModal,
+      showContactsModal,
       form,
       searchQuery,
       statusFilter,
@@ -989,6 +1160,9 @@ export default {
       enabledCount,
       disabledCount,
       totalValue,
+      contacts,
+      loadingContacts,
+      unreadContactsCount,
       handleFileChange,
       removeImage,
       clearFilters,
@@ -997,6 +1171,8 @@ export default {
       closeModal,
       editProduct,
       saveProduct,
+      fetchContacts,
+      markAsRead,
       deleteProduct,
       handleLogout,
     };

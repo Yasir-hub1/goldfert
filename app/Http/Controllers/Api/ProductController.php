@@ -21,6 +21,50 @@ class ProductController extends Controller
     }
 
     /**
+     * Obtener productos habilitados para el catálogo público
+     */
+    public function publicIndex()
+    {
+        $products = Product::where('enabled', true)
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($product) {
+                return [
+                    'id' => $product->id,
+                    'nombre' => $product->nombre,
+                    'foto' => $product->foto ? asset('storage/' . $product->foto) : null,
+                    'precio' => $product->precio,
+                    'dosis' => $product->dosis,
+                    'descripcion' => $product->descripcion,
+                    'cultivo' => $product->cultivo,
+                    'etapa' => $product->etapa,
+                ];
+            });
+
+        return response()->json($products);
+    }
+
+    /**
+     * Obtener detalle de un producto habilitado
+     */
+    public function publicShow(string $id)
+    {
+        $product = Product::where('enabled', true)->findOrFail($id);
+
+        return response()->json([
+            'id' => $product->id,
+            'nombre' => $product->nombre,
+            'foto' => $product->foto ? asset('storage/' . $product->foto) : null,
+            'precio' => $product->precio,
+            'dosis' => $product->dosis,
+            'descripcion' => $product->descripcion,
+            'cultivo' => $product->cultivo,
+            'etapa' => $product->etapa,
+            'created_at' => $product->created_at,
+        ]);
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)

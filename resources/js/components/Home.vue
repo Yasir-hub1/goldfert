@@ -16,7 +16,7 @@
 
                     <div class="hidden md:flex items-center space-x-8">
                         <a class="font-semibold text-green-700 dark:text-green-400 border-b-2 border-green-700 dark:border-green-400 transition" href="#inicio">Inicio</a>
-                        <a class="font-medium text-gray-600 dark:text-gray-300 hover:text-green-700 dark:hover:text-green-400 transition" href="#productos">Productos</a>
+                        <a class="font-medium text-gray-600 dark:text-gray-300 hover:text-green-700 dark:hover:text-green-400 transition" href="/productos" @click.prevent="$emit('show-products')">Productos</a>
                         <a class="font-medium text-gray-600 dark:text-gray-300 hover:text-green-700 dark:hover:text-green-400 transition" href="#soluciones">Soluciones Agrícolas</a>
                         <a class="font-medium text-gray-600 dark:text-gray-300 hover:text-green-700 dark:hover:text-green-400 transition" href="#nosotros">Nosotros</a>
                         <a class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded-md shadow-lg transition transform hover:-translate-y-0.5" href="#contacto">
@@ -51,11 +51,12 @@
             >
                 <!-- Header del menú móvil -->
                 <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-                    <div class="flex items-center gap-2">
-                        <span class="material-icons-outlined text-green-700 dark:text-green-400 text-3xl">eco</span>
-                        <span class="font-display font-bold text-xl text-green-900 dark:text-green-400">
-                            golfer<span class="text-amber-500">T</span>
-                        </span>
+                    <div class="flex items-center">
+                        <a href="#inicio" @click="closeMenu" class="flex items-center">
+                            <img src="/images/logo.png"
+                                 alt="GOLDfert Fertilizantes"
+                                 class="h-10 w-auto object-contain">
+                        </a>
                     </div>
                     <button
                         @click="mobileMenuOpen = false"
@@ -78,8 +79,8 @@
                     </a>
 
                     <a
-                        @click="closeMenu"
-                        href="#productos"
+                        @click="closeMenu; $emit('show-products')"
+                        href="/productos"
                         class="flex items-center gap-4 px-4 py-4 text-gray-700 dark:text-gray-200 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-lg transition-colors mb-2 group"
                     >
                         <span class="material-icons-outlined text-green-700 dark:text-green-400 group-hover:scale-110 transition-transform">inventory_2</span>
@@ -118,24 +119,40 @@
                 <!-- Footer del menú móvil -->
                 <div class="absolute bottom-0 left-0 right-0 p-6 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
                     <p class="text-xs text-center text-gray-500 dark:text-gray-400">
-                        © 2026 GolferT Fertilizantes
+                        © 2026 GOLDFERT Fertilizantes
                     </p>
                 </div>
             </div>
         </Transition>
 
-        <!-- Hero Section -->
-        <div id="inicio" class="relative bg-gray-900 overflow-hidden">
+        <!-- Hero Section with Slider -->
+        <div id="inicio" class="relative bg-gray-900 overflow-hidden" @mouseenter="pauseAutoplay" @mouseleave="resumeAutoplay">
+            <!-- Slider Container -->
             <div class="absolute inset-0">
-                <img alt="Farmer checking crops in a sunny field" class="w-full h-full object-cover" src="/images/hero2.png"/>
-                <div class="absolute inset-0 bg-gradient-to-r from-green-900/90 to-transparent dark:from-black/90 mix-blend-multiply"></div>
+                <!-- Slides -->
+                <TransitionGroup name="hero-slide">
+                    <div
+                        v-for="(slide, index) in heroSlides"
+                        v-show="currentSlide === index"
+                        :key="index"
+                        class="absolute inset-0"
+                    >
+                        <img
+                            :alt="slide.alt"
+                            class="w-full h-full object-cover object-center md:object-center"
+                            :src="slide.image"
+                        />
+                        <div class="absolute inset-0 bg-gradient-to-r from-green-900/90 via-green-900/70 to-transparent dark:from-black/90 dark:via-black/70 mix-blend-multiply"></div>
+                    </div>
+                </TransitionGroup>
             </div>
 
-            <div class="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8 h-[600px] flex flex-col justify-center">
+            <!-- Content (permanece estático sobre las imágenes) -->
+            <div class="relative max-w-7xl mx-auto py-16 px-4 sm:py-24 md:py-32 sm:px-6 lg:px-8 min-h-[500px] sm:min-h-[550px] md:h-[600px] flex flex-col justify-center">
                 <h1
                     data-aos="fade-right"
                     data-aos-duration="1000"
-                    class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl font-display mb-6 shadow-black drop-shadow-lg"
+                    class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white font-display mb-4 sm:mb-6 shadow-black drop-shadow-lg"
                 >
                     Nutriendo el Campo, <br/>
                     <span class="text-amber-500">Impulsando tu Cosecha</span>
@@ -145,18 +162,60 @@
                     data-aos="fade-right"
                     data-aos-duration="1000"
                     data-aos-delay="200"
-                    class="mt-2 text-xl text-gray-100 max-w-3xl font-light"
+                    class="mt-2 text-base sm:text-lg md:text-xl text-gray-100 max-w-3xl font-light"
                 >
                     Fertilizantes de Alta Eficiencia diseñados tecnológicamente para maximizar el rendimiento de tus cultivos.
                 </p>
 
-                <div class="mt-10" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
-                    <a class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-8 rounded-md shadow-lg transition transform hover:-translate-y-1 text-lg" href="#productos">
+                <div class="mt-6 sm:mt-8 md:mt-10 mb-16 sm:mb-0" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
+                    <a class="inline-block bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 px-6 sm:py-3 sm:px-8 rounded-md shadow-lg transition transform hover:-translate-y-1 text-base sm:text-lg" href="/productos" @click.prevent="$emit('show-products')">
                         Ver Productos
                     </a>
                 </div>
             </div>
 
+            <!-- Navigation Controls -->
+            <div class="absolute bottom-16 sm:bottom-20 md:bottom-24 left-0 right-0 z-10">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex items-center justify-center gap-4 sm:gap-0 sm:justify-between">
+                        <!-- Previous Button - Oculto en móvil, visible en tablet+ -->
+                        <button
+                            @click="prevSlide"
+                            class="hidden sm:flex group bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white p-2 md:p-3 rounded-full transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:ring-offset-transparent"
+                            aria-label="Anterior"
+                        >
+                            <span class="material-icons-outlined text-xl md:text-2xl transform group-hover:-translate-x-1 transition-transform">chevron_left</span>
+                        </button>
+
+                        <!-- Indicators - Centrados en móvil -->
+                        <div class="flex items-center gap-2 sm:gap-3">
+                            <button
+                                v-for="(slide, index) in heroSlides"
+                                :key="index"
+                                @click="goToSlide(index)"
+                                :class="[
+                                    'transition-all duration-300 rounded-full focus:outline-none focus:ring-2 focus:ring-amber-500',
+                                    currentSlide === index
+                                        ? 'w-10 sm:w-12 h-2.5 sm:h-3 bg-amber-500 shadow-lg shadow-amber-500/50'
+                                        : 'w-2.5 sm:w-3 h-2.5 sm:h-3 bg-white/40 hover:bg-white/60 hover:scale-125'
+                                ]"
+                                :aria-label="`Ir a imagen ${index + 1}`"
+                            ></button>
+                        </div>
+
+                        <!-- Next Button - Oculto en móvil, visible en tablet+ -->
+                        <button
+                            @click="nextSlide"
+                            class="hidden sm:flex group bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white p-2 md:p-3 rounded-full transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:ring-offset-transparent"
+                            aria-label="Siguiente"
+                        >
+                            <span class="material-icons-outlined text-xl md:text-2xl transform group-hover:translate-x-1 transition-transform">chevron_right</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wave -->
             <div class="wave-container">
                 <svg class="relative block w-[calc(100%+1.3px)] h-[60px]" data-name="Layer 1" preserveAspectRatio="none" viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg">
                     <path class="fill-gray-50 dark:fill-gray-900" d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path>
@@ -273,57 +332,151 @@
             </div>
 
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div class="text-center mb-16" data-aos="fade-up">
-                    <h2 class="text-3xl font-extrabold text-white font-display inline-block border-b-2 border-amber-500 pb-2">Líneas de Productos</h2>
+                <div class="text-center mb-12" data-aos="fade-up">
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white font-display inline-block border-b-2 border-amber-500 pb-2">Nuestros Productos GOLDFERT</h2>
+                    <p class="text-green-100 mt-4 text-base sm:text-lg max-w-3xl mx-auto">Soluciones especializadas para cada etapa de tu cultivo</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Imagen Hero de Productos -->
+                <div class="mb-16" data-aos="zoom-in" data-aos-duration="1200">
+                    <div class="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-green-700/30 dark:border-green-500/30 hover:border-amber-500/50 dark:hover:border-amber-500/50 transition-all duration-300 transform hover:scale-[1.02]">
+                        <img
+                            src="/images/portada1.2.png"
+                            alt="Productos GOLDfert: SULFERT, CALBORZINC y VITAL Mix en campo de cultivo"
+                            class="w-full h-auto object-cover"
+                        />
+                        <!-- Gradiente con colores de la marca (verde y ámbar) -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-green-900/80 via-green-700/40 to-transparent dark:from-black/70 dark:via-green-900/30"></div>
+                        <!-- Overlay adicional con ámbar para destacar -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-transparent to-green-600/20"></div>
+                        <!-- Contenido del texto -->
+                        <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
+                            <div class="bg-white/10 dark:bg-black/20 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 dark:border-white/10">
+                                <p class="text-white text-lg sm:text-xl md:text-2xl font-bold text-center drop-shadow-2xl font-display">
+                                    <span class="text-amber-400">Fertilizantes</span> de Alta Tecnología para
+                                    <span class="text-green-300">Máximos Rendimientos</span>
+                                </p>
+                                <!-- Línea decorativa -->
+                                <div class="w-24 h-1 bg-amber-500 mx-auto mt-4 rounded-full shadow-lg shadow-amber-500/50"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cards de Productos -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                    <!-- SULFERT -->
                     <div
                         data-aos="flip-left"
                         data-aos-duration="800"
-                        class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-2xl transform transition hover:scale-105"
+                        class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-2xl transform transition hover:scale-105 hover:shadow-amber-500/20"
                     >
-                        <div class="h-48 bg-gray-100 dark:bg-gray-700 flex items-center justify-center p-4">
-                            <img alt="Botella de fertilizante Golferfol" class="h-full object-contain drop-shadow-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkDLa8SSIg37Y0CkBAebzh-8x6huADkvJ6w6ZGzn9iGh0hFHlNu6-ibGjvUwrP8qYRWrTAvIBpRP4yDYCBk8G014hyo-t93Wz4-Z_oQYdM2DhYUAIZ_bg_AZadxKWjQH3NYhqqB7-78GEgBTkBQGT-S_CXrSdqC90pSIcnkicItLH5KaDYwN4xp7YtFnozzNm5xDZvrcynINY81ybesKfMfoVQJMASaMta4Ux5dS_ilH5D3H1mLuPVcsQRMC6YY_1JnpO7VVaf-TWk"/>
+                        <div class="h-56 bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20 flex items-center justify-center p-6 relative">
+                            <div class="absolute top-4 right-4">
+                                <span class="bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-full">Premium</span>
                         </div>
-                        <div class="p-6 text-center">
-                            <h3 class="text-lg font-bold text-green-900 dark:text-white font-display">GOLFERFOL</h3>
-                            <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Línea Foliar Premium</p>
-                            <button class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded w-full transition">Ver Más</button>
+                            <div class="text-center">
+                                <div class="w-24 h-24 mx-auto mb-4 bg-gradient-to-br from-orange-400 to-amber-500 rounded-2xl flex items-center justify-center shadow-xl">
+                                    <span class="material-icons-outlined text-white text-5xl">spa</span>
+                                </div>
+                                <div class="space-y-1">
+                                    <h3 class="text-2xl font-bold text-orange-900 dark:text-orange-400 font-display">SULFERT</h3>
+                                    <p class="text-sm text-orange-700 dark:text-orange-300 font-semibold">Fertilizante Foliar</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 leading-relaxed">
+                                Fertilizante foliar especializado con azufre para mejorar la calidad y vigor de tus cultivos. Fórmula concentrada de rápida absorción.
+                            </p>
+                            <button
+                                @click="$emit('show-products')"
+                                class="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold py-3 px-6 rounded-lg w-full transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
+                            >
+                                Ver Detalles
+                            </button>
                         </div>
                     </div>
 
+                    <!-- CALBORZINC -->
                     <div
                         data-aos="flip-left"
                         data-aos-duration="800"
                         data-aos-delay="100"
-                        class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-2xl transform transition hover:scale-105"
+                        class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-2xl transform transition hover:scale-105 hover:shadow-cyan-500/20 lg:scale-105"
                     >
-                        <div class="h-48 bg-gray-100 dark:bg-gray-700 flex items-center justify-center p-4">
-                            <img alt="Botella de fertilizante Golfer Reax" class="h-full object-contain drop-shadow-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaM7CAHA1r6KvtpZP4dRXqg5-Hot9FCibou5blzrZp2z_MRs6QQGe08Fi4Q5FDM427nYTUyCDtavd5zBbpxAcWDrhKuqa15bG26Ze1exwccE-6Wq9FoiOg5Crrl7p69wFrTTmyt3jhFjpTnp3L1Dc1u7OTQXdPQeCIfJd7STSt-zpwp_xJeDQ3dLaG_L0BuQ4FhdP3CdUu3vvy49mXrJnLADmFwBsHgq7Dqk162Jr4bDByWJ2ce6_tiU9LKPCpRGtno-c2dyPbCYAa"/>
+                        <div class="h-56 bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-900/20 dark:to-blue-900/20 flex items-center justify-center p-6 relative">
+                            <div class="absolute top-4 right-4">
+                                <span class="bg-cyan-500 text-white text-xs font-bold px-3 py-1 rounded-full">Destacado</span>
                         </div>
-                        <div class="p-6 text-center">
-                            <h3 class="text-lg font-bold text-green-900 dark:text-white font-display">GOLFER REAX</h3>
-                            <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Bioestimulantes Avanzados</p>
-                            <button class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded w-full transition">Ver Más</button>
+                            <div class="text-center">
+                                <div class="w-24 h-24 mx-auto mb-4 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-2xl flex items-center justify-center shadow-xl">
+                                    <span class="material-icons-outlined text-white text-5xl">agriculture</span>
+                                </div>
+                                <div class="space-y-1">
+                                    <h3 class="text-2xl font-bold text-cyan-900 dark:text-cyan-400 font-display">CALBORZINC</h3>
+                                    <p class="text-sm text-cyan-700 dark:text-cyan-300 font-semibold">Fertilizante Foliar</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 leading-relaxed">
+                                Complejo nutritivo con Calcio, Boro y Zinc. Ideal para fortalecer estructura celular, mejorar floración y cuajado de frutos.
+                            </p>
+                            <button
+                                @click="$emit('show-products')"
+                                class="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-bold py-3 px-6 rounded-lg w-full transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
+                            >
+                                Ver Detalles
+                            </button>
                         </div>
                     </div>
 
+                    <!-- VITAL Mix -->
                     <div
                         data-aos="flip-left"
                         data-aos-duration="800"
                         data-aos-delay="200"
-                        class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-2xl transform transition hover:scale-105"
+                        class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-2xl transform transition hover:scale-105 hover:shadow-green-500/20"
                     >
-                        <div class="h-48 bg-gray-100 dark:bg-gray-700 flex items-center justify-center p-4">
-                            <img alt="Botella de fertilizante Golfer Mix" class="h-full object-contain drop-shadow-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCffLimxh026eZmgxaJ9JFZ5RNAQ-i6MUFpmsSKWBOj5vGXJJHRSwjSkVeoe0OsyIERNt8ulSSai4n36IpElpffxwKY8uKLuWCVuJvnZw1h3uIj-L-HcvayrkXz_h0I2Jo9gkSCZODe2fKOfmEfiVZ7qvC7lOjitNLk-CLm3HdP_kY8gIaD2l1TPnXwJH0EyGeItzPIOmi2VynG5PWSQXpM7bwpQNcwTQWcl0-r_Bd1PK7S6dvEhikN7TIZOwmCwk05M_KaYyPtvOd2"/>
+                        <div class="h-56 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 flex items-center justify-center p-6 relative">
+                            <div class="absolute top-4 right-4">
+                                <span class="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">Bioestimulante</span>
                         </div>
-                        <div class="p-6 text-center">
-                            <h3 class="text-lg font-bold text-green-900 dark:text-white font-display">GOLFER.MIX</h3>
-                            <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Correctores de Carencias</p>
-                            <button class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded w-full transition">Ver Más</button>
+                            <div class="text-center">
+                                <div class="w-24 h-24 mx-auto mb-4 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl flex items-center justify-center shadow-xl">
+                                    <span class="material-icons-outlined text-white text-5xl">eco</span>
                         </div>
+                                <div class="space-y-1">
+                                    <h3 class="text-2xl font-bold text-green-900 dark:text-green-400 font-display">VITAL Mix</h3>
+                                    <p class="text-sm text-green-700 dark:text-green-300 font-semibold">Bioestimulante</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 leading-relaxed">
+                                Bioestimulante de composición química concentrada. Activa procesos fisiológicos vitales y mejora la resistencia al estrés.
+                            </p>
+                            <button
+                                @click="$emit('show-products')"
+                                class="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold py-3 px-6 rounded-lg w-full transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
+                            >
+                                Ver Detalles
+                            </button>
                     </div>
+                    </div>
+                </div>
+
+                <!-- Botón Ver Catálogo Completo -->
+                <div class="mt-16 text-center" data-aos="fade-up" data-aos-delay="400">
+                    <button
+                        @click="$emit('show-products')"
+                        class="inline-flex items-center gap-3 bg-white hover:bg-amber-50 text-green-900 font-bold py-4 px-8 rounded-xl shadow-2xl transition-all transform hover:scale-105 hover:-translate-y-1 border-2 border-amber-500"
+                    >
+                        <span class="material-icons-outlined text-2xl">inventory_2</span>
+                        <span class="text-lg">Ver Catálogo Completo</span>
+                        <span class="material-icons-outlined text-2xl">arrow_forward</span>
+                    </button>
                 </div>
             </div>
 
@@ -401,6 +554,185 @@
             </div>
         </section>
 
+        <!-- TikTok Videos Section -->
+        <section class="py-16 sm:py-20 bg-green-900 dark:bg-gray-900 relative">
+            <!-- Wave Superior -->
+            <div class="wave-top">
+                <svg class="relative block w-[calc(100%+1.3px)] h-[50px]" data-name="Layer 1" preserveAspectRatio="none" viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg">
+                    <path class="fill-gray-50 dark:fill-gray-900" d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path>
+                </svg>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <!-- Header -->
+                <div class="text-center mb-12" data-aos="fade-up">
+                    <div class="inline-flex items-center gap-3 bg-amber-500/20 backdrop-blur-sm px-5 py-2.5 rounded-full mb-5 border border-amber-500/30">
+                        <svg class="w-6 h-6 text-amber-500" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                        </svg>
+                        <span class="text-amber-500 font-bold text-sm uppercase tracking-wide">Síguenos en TikTok</span>
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white font-display inline-block border-b-2 border-amber-500 pb-2 mb-4">Mira Nuestros Videos</h2>
+                    <p class="text-green-100 text-base sm:text-lg max-w-2xl mx-auto mt-4">Aprende sobre nuestros productos y descubre resultados reales en el campo</p>
+                </div>
+
+                <!-- Slider Container -->
+                <div class="relative" data-aos="zoom-in" data-aos-duration="1000">
+                    <!-- Video Principal -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-500/30">
+                        <div class="bg-black relative min-h-[500px] sm:min-h-[600px] flex items-center justify-center">
+                            <!-- Video Embed usando blockquote (formato oficial de TikTok) -->
+                            <div class="w-full h-full flex items-center justify-center p-4 relative min-h-[500px] sm:min-h-[600px]">
+                                <template v-for="(video, index) in tiktokVideos" :key="`video-${video.id}`">
+                                    <blockquote
+                                        v-show="currentTikTokVideo === index"
+                                        class="tiktok-embed"
+                                        :cite="video.url"
+                                        :data-video-id="video.videoId"
+                                        :data-rendered="false"
+                                        style="max-width: 100%; min-width: 325px;"
+                                    >
+                                        <section>
+                                            <a
+                                                :href="video.url"
+                                                target="_blank"
+                                                :title="video.title"
+                                            >{{ video.title }}</a>
+                                        </section>
+                                    </blockquote>
+                                </template>
+                                <!-- Loading State -->
+                                <div v-if="!tiktokScriptLoaded" class="absolute inset-0 flex items-center justify-center">
+                                    <div class="text-center text-white">
+                                        <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-white mb-4"></div>
+                                        <p class="text-lg font-semibold">Cargando videos...</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Controles sobre el video (solo visible en hover en desktop) -->
+                            <div class="absolute inset-0 bg-black/0 hover:bg-black/20 transition-colors duration-300 flex items-center justify-between px-4 opacity-0 hover:opacity-100 pointer-events-none hover:pointer-events-auto">
+                                <button
+                                    @click="prevTikTokVideo"
+                                    class="bg-white/90 hover:bg-white text-gray-900 p-3 rounded-full shadow-xl transition-all transform hover:scale-110 hidden sm:flex items-center justify-center pointer-events-auto"
+                                    aria-label="Video anterior"
+                                >
+                                    <span class="material-icons-outlined">chevron_left</span>
+                                </button>
+                                <button
+                                    @click="nextTikTokVideo"
+                                    class="bg-white/90 hover:bg-white text-gray-900 p-3 rounded-full shadow-xl transition-all transform hover:scale-110 hidden sm:flex items-center justify-center pointer-events-auto"
+                                    aria-label="Siguiente video"
+                                >
+                                    <span class="material-icons-outlined">chevron_right</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Info del Video y Controles Móviles -->
+                        <div class="p-4 sm:p-6 bg-gradient-to-r from-green-50 to-amber-50 dark:from-green-900/20 dark:to-amber-900/20">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">{{ tiktokVideos[currentTikTokVideo].title }}</h3>
+                                <a
+                                    :href="tiktokVideos[currentTikTokVideo].url"
+                                    target="_blank"
+                                    class="inline-flex items-center gap-2 bg-gray-900 hover:bg-black text-white px-3 py-2 rounded-lg transition-all transform hover:scale-105 text-sm font-semibold"
+                                >
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                                    </svg>
+                                    Ver en TikTok
+                                </a>
+                            </div>
+
+                            <!-- Controles Móviles -->
+                            <div class="flex sm:hidden items-center justify-between gap-4">
+                                <button
+                                    @click="prevTikTokVideo"
+                                    class="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
+                                >
+                                    <span class="material-icons-outlined">chevron_left</span>
+                                    Anterior
+                                </button>
+                                <button
+                                    @click="nextTikTokVideo"
+                                    class="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
+                                >
+                                    Siguiente
+                                    <span class="material-icons-outlined">chevron_right</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Galería de Videos (Thumbnails) -->
+                    <div class="mt-6 sm:mt-8">
+                        <div class="flex items-center justify-center gap-2 sm:gap-3 flex-wrap max-w-4xl mx-auto">
+                            <button
+                                v-for="(video, index) in tiktokVideos"
+                                :key="video.id"
+                                @click="selectTikTokVideo(index)"
+                                :class="[
+                                    'group relative overflow-hidden rounded-lg transition-all duration-300 transform cursor-pointer',
+                                    currentTikTokVideo === index
+                                        ? 'ring-4 ring-amber-500 scale-110 shadow-2xl shadow-amber-500/50 z-10'
+                                        : 'ring-2 ring-white/30 hover:ring-white/60 hover:scale-105 opacity-70 hover:opacity-100'
+                                ]"
+                                :aria-label="`Ver video: ${video.title}`"
+                            >
+                                <!-- Thumbnail Container -->
+                                <div class="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-green-600 via-amber-500 to-green-600 flex items-center justify-center relative">
+                                    <!-- Número del video -->
+                                    <div class="absolute top-1 left-1 bg-black/60 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">
+                                        {{ index + 1 }}
+                                    </div>
+                                    <!-- Icono TikTok -->
+                                    <svg class="w-8 h-8 sm:w-10 sm:h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                                    </svg>
+                                    <!-- Play Icon Overlay -->
+                                    <div
+                                        v-if="currentTikTokVideo !== index"
+                                        class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                    >
+                                        <span class="material-icons-outlined text-white text-2xl sm:text-3xl">play_circle</span>
+                                    </div>
+                                    <!-- Indicador activo -->
+                                    <div
+                                        v-if="currentTikTokVideo === index"
+                                        class="absolute inset-0 bg-amber-500/20 flex items-center justify-center"
+                                    >
+                                        <div class="w-3 h-3 bg-amber-500 rounded-full animate-pulse"></div>
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+                        <!-- Contador de videos -->
+                        <div class="text-center mt-4">
+                            <p class="text-green-100 text-sm">
+                                Video {{ currentTikTokVideo + 1 }} de {{ tiktokVideos.length }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Call to Action -->
+                    <div class="mt-8 text-center" data-aos="fade-up" data-aos-delay="200">
+                        <a
+                            :href="socialMedia.tiktok"
+                            target="_blank"
+                            class="inline-flex items-center gap-3 bg-white hover:bg-gray-50 text-gray-900 font-bold py-4 px-8 rounded-xl shadow-2xl transition-all transform hover:scale-105 border-2 border-gray-900"
+                        >
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                            </svg>
+                            <span>Síguenos en @goldfert</span>
+                            <span class="material-icons-outlined">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Contact Section -->
         <section id="contacto" class="py-16 bg-white dark:bg-gray-900 relative">
             <div class="absolute top-0 left-0 w-full h-12 bg-gradient-to-b from-gray-100 dark:from-gray-800 to-transparent pointer-events-none"></div>
@@ -449,9 +781,14 @@
                         </div>
 
                         <div class="sm:col-span-2">
-                            <button class="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-bold text-white bg-green-700 dark:bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-colors" type="submit">
-                                Enviar Mensaje
-                                <span class="material-icons-outlined ml-2">send</span>
+                            <button
+                                :disabled="submitting"
+                                class="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-bold text-white bg-green-700 dark:bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                type="submit"
+                            >
+                                <span v-if="submitting" class="inline-block animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></span>
+                                <span v-else class="material-icons-outlined mr-2">send</span>
+                                {{ submitting ? 'Enviando...' : 'Enviar Mensaje' }}
                             </button>
                         </div>
                     </div>
@@ -465,9 +802,10 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     <!-- Logo y descripción -->
                     <div>
-                        <div class="flex items-center gap-2 mb-4">
-                            <span class="material-icons-outlined text-amber-500 text-3xl">eco</span>
-                            <span class="font-display font-bold text-xl tracking-tight">golfer<span class="text-amber-500">T</span></span>
+                        <div class="flex items-center mb-4">
+                            <img src="/images/logo.png"
+                                 alt="GOLDfert Fertilizantes"
+                                 class="h-12 w-auto object-contain">
                         </div>
                         <p class="text-gray-400 text-sm leading-relaxed mb-4">
                             Comprometidos con el desarrollo agrícola sostenible a través de la innovación y la calidad.
@@ -489,6 +827,11 @@
                                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
                                 </svg>
                             </a>
+                            <a :href="socialMedia.tiktok" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-black hover:bg-gray-800 rounded-full flex items-center justify-center transition-all transform hover:scale-110" aria-label="TikTok">
+                                <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                                </svg>
+                            </a>
                         </div>
                     </div>
 
@@ -496,11 +839,36 @@
                     <div>
                         <h3 class="text-sm font-semibold text-gray-200 tracking-wider uppercase mb-4">Contacto</h3>
                         <ul class="space-y-3">
+                            <!-- Teléfono 1 con WhatsApp -->
                             <li class="flex items-start gap-3">
                                 <span class="material-icons-outlined text-amber-500 text-xl">phone</span>
-                                <div>
-                                    <p class="text-gray-400 text-sm">Teléfono</p>
-                                    <a :href="'tel:' + contactInfo.phone.replace(/\D/g,'')" class="text-white hover:text-amber-500 transition">{{ contactInfo.phone }}</a>
+                                <div class="flex-1">
+                                    <p class="text-gray-400 text-sm mb-1">Teléfono 1</p>
+                                    <div class="flex items-center gap-3">
+                                        <a :href="'tel:' + contactInfo.phone.replace(/\D/g,'')" class="text-white hover:text-amber-500 transition">{{ contactInfo.phone }}</a>
+                                        <a :href="contactInfo.whatsapp1Link" target="_blank" class="inline-flex items-center gap-1 bg-green-500 hover:bg-green-600 text-white text-xs font-semibold px-2 py-1 rounded transition">
+                                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                                            </svg>
+                                            WhatsApp
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                            <!-- Teléfono 2 con WhatsApp -->
+                            <li class="flex items-start gap-3">
+                                <span class="material-icons-outlined text-amber-500 text-xl">phone</span>
+                                <div class="flex-1">
+                                    <p class="text-gray-400 text-sm mb-1">Teléfono 2</p>
+                                    <div class="flex items-center gap-3">
+                                        <a :href="'tel:' + contactInfo.phone2.replace(/\D/g,'')" class="text-white hover:text-amber-500 transition">{{ contactInfo.phone2 }}</a>
+                                        <a :href="contactInfo.whatsapp2Link" target="_blank" class="inline-flex items-center gap-1 bg-green-500 hover:bg-green-600 text-white text-xs font-semibold px-2 py-1 rounded transition">
+                                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                                            </svg>
+                                            WhatsApp
+                                        </a>
+                                    </div>
                                 </div>
                             </li>
                             <li class="flex items-start gap-3">
@@ -510,23 +878,23 @@
                                     <a :href="'mailto:' + contactInfo.email" class="text-white hover:text-amber-500 transition">{{ contactInfo.email }}</a>
                                 </div>
                             </li>
-                            <li class="flex items-start gap-3">
+                            <!-- <li class="flex items-start gap-3">
                                 <span class="material-icons-outlined text-amber-500 text-xl">location_on</span>
                                 <div>
                                     <p class="text-gray-400 text-sm">Dirección</p>
                                     <p class="text-white text-sm">{{ contactInfo.address }}</p>
                                 </div>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
 
                     <!-- Horarios de Atención -->
-                    <div>
+                    <!-- <div>
                         <h3 class="text-sm font-semibold text-gray-200 tracking-wider uppercase mb-4">Horarios</h3>
                         <ul class="space-y-3">
                             <li class="flex items-start gap-3">
                                 <span class="material-icons-outlined text-amber-500 text-xl">schedule</span>
-                                <div>
+                    <div>
                                     <p class="text-white text-sm font-medium">{{ schedule.weekdays }}</p>
                                 </div>
                             </li>
@@ -543,7 +911,7 @@
                                 </div>
                             </li>
                         </ul>
-                    </div>
+                    </div> -->
 
                     <!-- Enlaces Rápidos -->
                     <div>
@@ -553,7 +921,7 @@
                                 <span class="material-icons-outlined text-sm">arrow_forward</span>
                                 Inicio
                             </a></li>
-                            <li><a class="text-gray-400 hover:text-white transition flex items-center gap-2" href="#productos">
+                            <li><a class="text-gray-400 hover:text-white transition flex items-center gap-2" href="/productos" @click.prevent="$emit('show-products')">
                                 <span class="material-icons-outlined text-sm">arrow_forward</span>
                                 Productos
                             </a></li>
@@ -577,7 +945,7 @@
                 <div class="mt-12 pt-8 border-t border-gray-800">
                     <div class="flex flex-col md:flex-row justify-between items-center gap-4">
                         <p class="text-sm text-gray-400 text-center md:text-left">
-                            © 2026 GolferT Fertilizantes. Todos los derechos reservados.
+                            © 2026 GOLDFERT Fertilizantes. Todos los derechos reservados.
                         </p>
                         <div class="flex gap-6">
                             <a href="#" class="text-sm text-gray-400 hover:text-white transition">Privacidad</a>
@@ -588,15 +956,44 @@
                 </div>
             </div>
         </footer>
+        <ToastContainer />
     </div>
 </template>
 
 <script>
+import axios from 'axios';
+import { useToast } from '../composables/useToast';
+import ToastContainer from './ToastContainer.vue';
+import { tiktokVideos, loadTikTokEmbedScript } from '../helper/helper.js';
+
 export default {
     name: 'Home',
+    components: {
+        ToastContainer
+    },
     data() {
         return {
             mobileMenuOpen: false,
+            submitting: false,
+            toast: null,
+            // Hero Slider
+            currentSlide: 0,
+            autoplayInterval: null,
+            isAutoplayPaused: false,
+            heroSlides: [
+                {
+                    image: '/images/portada1.1.png',
+                    alt: 'Productos GOLDfert en campo de cultivo'
+                },
+                {
+                    image: '/images/portada1.2.png',
+                    alt: 'Fertilizantes foliares especializados'
+                },
+                {
+                    image: '/images/portada1.3.png',
+                    alt: 'Soluciones agrícolas de alta eficiencia'
+                }
+            ],
             form: {
                 name: '',
                 email: '',
@@ -604,17 +1001,25 @@ export default {
                 message: ''
             },
             contactInfo: {
-                phone: '+52 123 456 7890',
-                email: 'info@golfert.com',
-                address: 'Av. Principal #123, Ciudad, Estado, CP 12345',
-                whatsapp: '+52 123 456 7890'
+                phone: '71616724',
+                phone2: '78000965',
+                email: 'goldfertfertilixantes@gmail.com',
+                address: '',
+                whatsapp: '+59171616724',
+                whatsapp1Link: 'https://wa.me/59171616724',
+                whatsapp2Link: 'https://wa.me/59178000965'
             },
             socialMedia: {
                 facebook: 'https://www.facebook.com/profile.php?id=100054637500718',
-                instagram: '#',
+                instagram: 'https://www.instagram.com/goldfert.rg?igsh=NGtiNGE3eGxybDNn&utm_source=qr',
+                tiktok: 'https://www.tiktok.com/@goldfert?_r=1&_t=ZM-92zYeasqdTg',
                 twitter: '#',
                 linkedin: '#'
             },
+            // Slider de Videos TikTok
+            currentTikTokVideo: 0,
+            tiktokVideos: tiktokVideos,
+            tiktokScriptLoaded: false,
             schedule: {
                 weekdays: 'Lunes - Viernes: 8:00 AM - 6:00 PM',
                 saturday: 'Sábado: 9:00 AM - 2:00 PM',
@@ -623,6 +1028,9 @@ export default {
         }
     },
     mounted() {
+        // Inicializar toast
+        this.toast = useToast();
+
         // Inicializar AOS
         if (typeof AOS !== 'undefined') {
             AOS.init({
@@ -633,12 +1041,146 @@ export default {
             });
         }
 
+        // Prevenir scroll automático al hash en móvil
+        this.preventAutoScroll();
+
+        // Iniciar autoplay del slider hero
+        this.startAutoplay();
+
+        // Cargar script de TikTok para los embeds
+        this.loadTikTokScript();
+
         // Smooth scroll para navegación
         this.setupSmoothScroll();
+    },
+    beforeUnmount() {
+        // Limpiar el intervalo del slider al destruir el componente
+        this.stopAutoplay();
     },
     methods: {
         closeMenu() {
             this.mobileMenuOpen = false;
+        },
+        // Hero Slider Methods
+        nextSlide() {
+            this.currentSlide = (this.currentSlide + 1) % this.heroSlides.length;
+        },
+        prevSlide() {
+            this.currentSlide = (this.currentSlide - 1 + this.heroSlides.length) % this.heroSlides.length;
+        },
+        goToSlide(index) {
+            this.currentSlide = index;
+        },
+        startAutoplay() {
+            this.autoplayInterval = setInterval(() => {
+                if (!this.isAutoplayPaused) {
+                    this.nextSlide();
+                }
+            }, 5000); // Cambiar cada 5 segundos
+        },
+        stopAutoplay() {
+            if (this.autoplayInterval) {
+                clearInterval(this.autoplayInterval);
+                this.autoplayInterval = null;
+            }
+        },
+        pauseAutoplay() {
+            this.isAutoplayPaused = true;
+        },
+        resumeAutoplay() {
+            this.isAutoplayPaused = false;
+        },
+        // TikTok Slider Methods
+        nextTikTokVideo() {
+            this.currentTikTokVideo = (this.currentTikTokVideo + 1) % this.tiktokVideos.length;
+            this.renderTikTokVideo();
+        },
+        prevTikTokVideo() {
+            this.currentTikTokVideo = (this.currentTikTokVideo - 1 + this.tiktokVideos.length) % this.tiktokVideos.length;
+            this.renderTikTokVideo();
+        },
+        selectTikTokVideo(index) {
+            this.currentTikTokVideo = index;
+            this.renderTikTokVideo();
+        },
+        async loadTikTokScript() {
+            try {
+                await loadTikTokEmbedScript();
+                this.tiktokScriptLoaded = true;
+                // Esperar un poco más para que TikTok inicialice completamente
+                setTimeout(() => {
+                    this.renderTikTokVideo();
+                }, 1000);
+            } catch (error) {
+                console.error('Error al cargar script de TikTok:', error);
+                // Intentar usar el script que ya está en el head
+                if (document.querySelector('script[src*="tiktok.com/embed.js"]')) {
+                    setTimeout(() => {
+                        this.tiktokScriptLoaded = true;
+                        this.renderTikTokVideo();
+                    }, 2000);
+                }
+            }
+        },
+        renderTikTokVideo() {
+            // Usar nextTick para asegurar que el DOM esté actualizado
+            this.$nextTick(() => {
+                if (window.tiktokEmbed && window.tiktokEmbed.lib) {
+                    // Renderizar el blockquote del video actual
+                    const currentVideo = this.tiktokVideos[this.currentTikTokVideo];
+                    if (currentVideo && currentVideo.videoId) {
+                        const blockquote = document.querySelector(`.tiktok-embed[data-video-id="${currentVideo.videoId}"]`);
+                        if (blockquote) {
+                            const isRendered = blockquote.getAttribute('data-rendered') === 'true';
+                            if (!isRendered) {
+                                try {
+                                    window.tiktokEmbed.lib.render(blockquote);
+                                    blockquote.setAttribute('data-rendered', 'true');
+                                } catch (error) {
+                                    console.error('Error al renderizar video de TikTok:', error);
+                                    // Reintentar después de un segundo
+                                    setTimeout(() => {
+                                        this.renderTikTokVideo();
+                                    }, 1000);
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    // Si el script aún no está cargado, intentar de nuevo
+                    setTimeout(() => {
+                        this.renderTikTokVideo();
+                    }, 500);
+                }
+            });
+        },
+        preventAutoScroll() {
+            // Prevenir scroll automático cuando hay hash en la URL al cargar
+            // En móvil, siempre empezar en el inicio a menos que el usuario haga clic explícitamente
+            const hash = window.location.hash;
+
+            // Si hay hash y no es #inicio, esperar un momento y luego hacer scroll suave
+            if (hash && hash !== '#inicio') {
+                this.$nextTick(() => {
+                    setTimeout(() => {
+                        const target = document.querySelector(hash);
+                        if (target) {
+                            const headerOffset = 80;
+                            const elementPosition = target.getBoundingClientRect().top;
+                            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                            window.scrollTo({
+                                top: offsetPosition,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }, 300);
+                });
+            } else {
+                // Si no hay hash o es #inicio, asegurar que estemos en el inicio
+                this.$nextTick(() => {
+                    window.scrollTo({ top: 0, behavior: 'auto' });
+                });
+            }
         },
         setupSmoothScroll() {
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -658,10 +1200,34 @@ export default {
                 });
             });
         },
-        handleSubmit() {
-            console.log('Form submitted:', this.form);
-            // Aquí puedes agregar la lógica para enviar el formulario
-            alert('Mensaje enviado correctamente!');
+        async handleSubmit() {
+            if (!this.toast) {
+                this.toast = useToast();
+            }
+
+            // Validación básica
+            if (!this.form.name || !this.form.name.trim()) {
+                this.toast.warning('El nombre es obligatorio.');
+                return;
+            }
+            if (!this.form.email || !this.form.email.trim()) {
+                this.toast.warning('El correo electrónico es obligatorio.');
+                return;
+            }
+            if (!this.form.message || !this.form.message.trim()) {
+                this.toast.warning('El mensaje es obligatorio.');
+                return;
+            }
+
+            this.submitting = true;
+
+            try {
+                const response = await axios.post('/api/contact', this.form, {
+                    withCredentials: true,
+                });
+
+                if (response.data) {
+                    this.toast.success(response.data.message || 'Mensaje enviado exitosamente. Nos pondremos en contacto contigo pronto.');
             this.form = {
                 name: '',
                 email: '',
@@ -669,11 +1235,91 @@ export default {
                 message: ''
             };
         }
+            } catch (error) {
+                console.error('Error al enviar contacto:', error);
+                if (error.response && error.response.data) {
+                    if (error.response.data.errors) {
+                        const errors = error.response.data.errors;
+                        Object.keys(errors).forEach((field) => {
+                            errors[field].forEach((message) => {
+                                this.toast.error(message);
+                            });
+                        });
+                    } else if (error.response.data.message) {
+                        this.toast.error(error.response.data.message);
+                    } else {
+                        this.toast.error('Error al enviar el mensaje. Por favor, intenta de nuevo.');
+                    }
+                } else {
+                    this.toast.error('Error de conexión. Por favor, verifica tu conexión a internet.');
+                }
+            } finally {
+                this.submitting = false;
+            }
+        }
     }
 }
 </script>
 
 <style scoped>
+/* Hero Slider Transitions */
+.hero-slide-enter-active {
+    transition: opacity 1.2s ease-in-out, transform 1.2s ease-in-out;
+}
+
+.hero-slide-leave-active {
+    transition: opacity 1.2s ease-in-out, transform 1.2s ease-in-out;
+}
+
+.hero-slide-enter-from {
+    opacity: 0;
+    transform: scale(1.1);
+}
+
+.hero-slide-leave-to {
+    opacity: 0;
+    transform: scale(0.95);
+}
+
+/* TikTok Video Slider Transitions */
+.video-fade-enter-active,
+.video-fade-leave-active {
+    transition: opacity 0.5s ease-in-out;
+}
+
+.video-fade-enter-from,
+.video-fade-leave-to {
+    opacity: 0;
+}
+
+/* TikTok Embed Styles */
+.tiktok-embed {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 325px;
+}
+
+.tiktok-embed iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Loading state para videos */
+.tiktok-embed[data-rendered="false"] {
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.tiktok-embed[data-rendered="false"]::before {
+    content: "Cargando video...";
+    color: white;
+    font-weight: bold;
+}
+
 .wave-container {
     position: absolute;
     bottom: 0;

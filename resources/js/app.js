@@ -4,6 +4,7 @@ import axios from 'axios';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import App from './components/App.vue';
+import Admin from './components/Admin.vue';
 
 // Registrar plugin de GSAP
 gsap.registerPlugin(ScrollTrigger);
@@ -21,8 +22,20 @@ if (token) {
 const appElement = document.getElementById('app');
 
 if (appElement) {
-    // Inicializar Vue con el componente App
-    const app = createApp(App);
+    // Detectar la ruta actual para montar el componente correcto
+    const currentPath = window.location.pathname;
+
+    let componentToMount;
+
+    // Si estamos en /admin, montar Admin (Login + CRUD), de lo contrario montar App (página pública)
+    if (currentPath === '/admin') {
+        componentToMount = Admin;
+    } else {
+        componentToMount = App;
+    }
+
+    // Inicializar Vue con el componente correspondiente
+    const app = createApp(componentToMount);
 
     // Montar la aplicación
     app.mount('#app');
