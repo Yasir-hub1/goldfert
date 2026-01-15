@@ -148,11 +148,26 @@
             </div>
 
             <!-- Content (permanece estático sobre las imágenes) -->
-            <div class="relative max-w-7xl mx-auto py-16 px-4 sm:py-24 md:py-32 sm:px-6 lg:px-8 min-h-[500px] sm:min-h-[550px] md:h-[600px] flex flex-col justify-center">
+            <div class="relative max-w-7xl mx-auto py-7 px-4 sm:py-12 md:py-16 sm:px-6 lg:px-8 min-h-[550px] sm:min-h-[600px] md:h-[650px] lg:h-[700px] flex flex-col justify-center">
+                <!-- Logo GOLDfert -->
+                <div
+                    data-aos="fade-down"
+                    data-aos-duration="1000"
+                    class="mb-4 sm:mb-6"
+                >
+                    <img
+                        src="/images/logo.png"
+                        alt="GOLDfert Fertilizantes"
+                        class="h-36 sm:h-44 md:h-52 lg:h-60 w-auto object-contain brightness-110 contrast-110 drop-shadow-[0_0_25px_rgba(251,191,36,0.4)]"
+                        style="filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.3)) drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));"
+                    />
+                </div>
+
                 <h1
                     data-aos="fade-right"
                     data-aos-duration="1000"
-                    class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white font-display mb-4 sm:mb-6 shadow-black drop-shadow-lg"
+                    data-aos-delay="100"
+                    class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-extrabold tracking-tight text-white font-display mb-2 sm:mb-3 shadow-black drop-shadow-lg"
                 >
                     Nutriendo el Campo, <br/>
                     <span class="text-amber-500">Impulsando tu Cosecha</span>
@@ -162,20 +177,20 @@
                     data-aos="fade-right"
                     data-aos-duration="1000"
                     data-aos-delay="200"
-                    class="mt-2 text-base sm:text-lg md:text-xl text-gray-100 max-w-3xl font-light"
+                    class="mt-1.5 text-xs sm:text-sm md:text-base text-gray-100 max-w-xl font-light leading-relaxed"
                 >
-                    Fertilizantes de Alta Eficiencia diseñados tecnológicamente para maximizar el rendimiento de tus cultivos.
+                    Soluciones nutricionales de última generación con formulaciones científicas que optimizan la absorción y asimilación de nutrientes, garantizando cultivos más productivos y rentables.
                 </p>
 
-                <div class="mt-6 sm:mt-8 md:mt-10 mb-16 sm:mb-0" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
-                    <a class="inline-block bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 px-6 sm:py-3 sm:px-8 rounded-md shadow-lg transition transform hover:-translate-y-1 text-base sm:text-lg" href="/productos" @click.prevent="$emit('show-products')">
+                <div class="mt-5 sm:mt-6 md:mt-8 mb-20 sm:mb-0" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+                    <a class="inline-block bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-5 sm:py-2.5 sm:px-6 md:py-3 md:px-8 rounded-md shadow-lg transition transform hover:-translate-y-1 text-xs sm:text-sm md:text-base" href="/productos" @click.prevent="$emit('show-products')">
                         Ver Productos
                     </a>
                 </div>
             </div>
 
             <!-- Navigation Controls -->
-            <div class="absolute bottom-16 sm:bottom-20 md:bottom-24 left-0 right-0 z-10">
+            <div class="absolute bottom-8 sm:bottom-10 md:bottom-12 left-0 right-0 z-10">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex items-center justify-center gap-4 sm:gap-0 sm:justify-between">
                         <!-- Previous Button - Oculto en móvil, visible en tablet+ -->
