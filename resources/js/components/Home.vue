@@ -354,25 +354,28 @@
 
                 <!-- Imagen Hero de Productos -->
                 <div class="mb-16" data-aos="zoom-in" data-aos-duration="1200">
-                    <div class="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-green-700/30 dark:border-green-500/30 hover:border-amber-500/50 dark:hover:border-amber-500/50 transition-all duration-300 transform hover:scale-[1.02]">
-                        <img
-                            src="/images/portada1.2.png"
-                            alt="Productos GOLDfert: SULFERT, CALBORZINC y VITAL Mix en campo de cultivo"
-                            class="w-full h-auto object-cover"
-                        />
-                        <!-- Gradiente con colores de la marca (verde y ámbar) -->
-                        <div class="absolute inset-0 bg-gradient-to-t from-green-900/80 via-green-700/40 to-transparent dark:from-black/70 dark:via-green-900/30"></div>
-                        <!-- Overlay adicional con ámbar para destacar -->
-                        <div class="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-transparent to-green-600/20"></div>
-                        <!-- Contenido del texto -->
-                        <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
-                            <div class="bg-white/10 dark:bg-black/20 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 dark:border-white/10">
-                                <p class="text-white text-lg sm:text-xl md:text-2xl font-bold text-center drop-shadow-2xl font-display">
-                                    <span class="text-amber-400">Fertilizantes</span> de Alta Tecnología para
-                                    <span class="text-green-300">Máximos Rendimientos</span>
+                    <div class="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-green-700/30 dark:border-green-500/30 hover:border-amber-500/50 dark:hover:border-amber-500/50 transition-all duration-300 transform hover:scale-[1.02] group">
+                        <!-- Imagen con mejor contraste y brillo -->
+                        <div class="relative overflow-hidden">
+                            <img
+                                src="/images/portada1.2.1.png"
+                                alt="Productos GOLDfert: SULFERT, CALBORZINC y VITAL Mix en campo de cultivo"
+                                class="w-full h-auto object-cover brightness-105 contrast-110 saturate-110 transition-transform duration-500 group-hover:scale-105"
+                            />
+                            <!-- Gradiente más sutil en móvil, más visible en desktop -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-green-900/30 via-green-900/10 via-70% to-transparent sm:from-green-900/60 sm:via-green-900/20 sm:via-60% dark:from-black/30 dark:via-black/5 dark:to-transparent sm:dark:from-black/50 sm:dark:via-black/10"></div>
+                            <!-- Overlay sutil de ámbar para calidez -->
+                            <div class="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-transparent to-green-600/10"></div>
+                        </div>
+                        <!-- Contenido del texto con mejor contraste - más compacto en móvil -->
+                        <div class="absolute bottom-0 left-0 right-0 p-2 sm:p-4 md:p-6 lg:p-8">
+                            <div class="bg-gradient-to-t from-black/70 via-black/50 to-black/30 sm:from-black/80 sm:via-black/60 sm:to-black/40 dark:from-black/80 dark:via-black/60 dark:to-black/40 sm:dark:from-black/90 sm:dark:via-black/70 sm:dark:to-black/50 backdrop-blur-sm sm:backdrop-blur-md rounded-lg sm:rounded-xl p-2.5 sm:p-4 md:p-5 lg:p-6 border border-white/20 sm:border-white/30 dark:border-white/15 sm:dark:border-white/20 shadow-xl sm:shadow-2xl">
+                                <p class="text-white text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-bold text-center drop-shadow-2xl font-display leading-tight">
+                                    <span class="text-amber-400 drop-shadow-[0_2px_8px_rgba(251,191,36,0.8)]">Fertilizantes</span> de Alta Tecnología para
+                                    <span class="text-green-300 drop-shadow-[0_2px_8px_rgba(34,197,94,0.6)]">Máximos Rendimientos</span>
                                 </p>
-                                <!-- Línea decorativa -->
-                                <div class="w-24 h-1 bg-amber-500 mx-auto mt-4 rounded-full shadow-lg shadow-amber-500/50"></div>
+                                <!-- Línea decorativa mejorada -->
+                                <div class="w-16 sm:w-20 md:w-24 lg:w-32 h-0.5 sm:h-1 bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto mt-2 sm:mt-3 md:mt-4 rounded-full shadow-lg shadow-amber-500/60"></div>
                             </div>
                         </div>
                     </div>
@@ -510,6 +513,17 @@
                     <div class="w-16 h-1 bg-amber-500 mx-auto mt-2"></div>
                 </div>
 
+                <!-- Logo GOLDfert -->
+                <div class="flex justify-center mb-10" data-aos="fade-down" data-aos-duration="800" data-aos-delay="100">
+                    <div class="relative">
+                        <img
+                            src="/images/logo.png"
+                            alt="GOLDfert Fertilizantes"
+                            class="h-20 sm:h-24 md:h-28 lg:h-32 w-auto object-contain drop-shadow-lg"
+                        />
+                    </div>
+                </div>
+
                 <div class="relative">
                     <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
                         <img alt="Farm texture" class="w-full h-full object-cover rounded-3xl" src="/images/horizonte.png"/>
@@ -518,7 +532,7 @@
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
                         <div class="relative" data-aos="fade-right" data-aos-duration="1000">
                             <div class="absolute inset-0 bg-amber-500/20 rounded-3xl transform -rotate-3 z-0"></div>
-                            <img alt="Smiling agronomist with hat" class="relative z-10 rounded-3xl shadow-2xl border-4 border-white dark:border-gray-700" src="/images/footer.png"/>
+                            <img alt="Smiling agronomist with hat" class="relative z-10 rounded-3xl shadow-2xl border-4 border-white dark:border-gray-700" src="/images/fotofamiliar.jpeg"/>
                         </div>
 
                         <div class="space-y-10">
@@ -570,7 +584,16 @@
         </section>
 
         <!-- TikTok Videos Section -->
-        <section class="py-16 sm:py-20 bg-green-900 dark:bg-gray-900 relative">
+        <section class="py-16 sm:py-20 bg-green-900 dark:bg-gray-900 relative overflow-hidden">
+            <!-- Logo marca de agua superpuesta en el fondo de la sección -->
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-20 sm:opacity-25 md:opacity-30 pointer-events-none z-0">
+                <img
+                    src="/images/logo.png"
+                    alt="GOLDfert"
+                    class="w-64 sm:w-80 md:w-96 lg:w-[500px] h-auto object-contain brightness-150 contrast-125 drop-shadow-2xl"
+                />
+            </div>
+
             <!-- Wave Superior -->
             <div class="wave-top">
                 <svg class="relative block w-[calc(100%+1.3px)] h-[50px]" data-name="Layer 1" preserveAspectRatio="none" viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg">
@@ -594,10 +617,10 @@
                 <!-- Slider Container -->
                 <div class="relative" data-aos="zoom-in" data-aos-duration="1000">
                     <!-- Video Principal -->
-                    <div class="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-500/30">
-                        <div class="bg-black relative min-h-[500px] sm:min-h-[600px] flex items-center justify-center">
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-500/30 relative">
+                        <div class="bg-black relative min-h-[500px] sm:min-h-[600px] flex items-center justify-center overflow-hidden">
                             <!-- Video Embed usando blockquote (formato oficial de TikTok) -->
-                            <div class="w-full h-full flex items-center justify-center p-4 relative min-h-[500px] sm:min-h-[600px]">
+                            <div class="w-full h-full flex items-center justify-center p-4 relative min-h-[500px] sm:min-h-[600px] z-20">
                                 <template v-for="(video, index) in tiktokVideos" :key="`video-${video.id}`">
                                     <blockquote
                                         v-show="currentTikTokVideo === index"
@@ -625,8 +648,17 @@
                                 </div>
                             </div>
 
+                            <!-- Logo marca de agua superpuesta encima del video -->
+                            <div class="absolute inset-0 flex items-center justify-center opacity-25 sm:opacity-30 md:opacity-35 pointer-events-none z-30">
+                                <img
+                                    src="/images/logo.png"
+                                    alt="GOLDfert"
+                                    class="w-48 h-auto sm:w-64 md:w-80 lg:w-96 object-contain brightness-150 contrast-125 drop-shadow-2xl"
+                                />
+                            </div>
+
                             <!-- Controles sobre el video (solo visible en hover en desktop) -->
-                            <div class="absolute inset-0 bg-black/0 hover:bg-black/20 transition-colors duration-300 flex items-center justify-between px-4 opacity-0 hover:opacity-100 pointer-events-none hover:pointer-events-auto">
+                            <div class="absolute inset-0 bg-black/0 hover:bg-black/20 transition-colors duration-300 flex items-center justify-between px-4 opacity-0 hover:opacity-100 pointer-events-none hover:pointer-events-auto z-40">
                                 <button
                                     @click="prevTikTokVideo"
                                     class="bg-white/90 hover:bg-white text-gray-900 p-3 rounded-full shadow-xl transition-all transform hover:scale-110 hidden sm:flex items-center justify-center pointer-events-auto"
