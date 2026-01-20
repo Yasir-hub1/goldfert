@@ -1,7 +1,11 @@
 <template>
     <div>
         <!-- Navbar -->
-        <nav class="sticky top-0 z-50 bg-white dark:bg-gray-800 shadow-md transition-all duration-300">
+        <nav
+            class="sticky top-0 z-50 bg-white dark:bg-gray-800 shadow-md transition-all duration-300"
+            role="navigation"
+            aria-label="Navegación principal"
+        >
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-20">
                     <div class="flex items-center">
@@ -15,7 +19,11 @@
                     </div>
 
                     <div class="hidden md:flex items-center space-x-8">
-                        <a class="font-semibold text-green-700 dark:text-green-400 border-b-2 border-green-700 dark:border-green-400 transition" href="#inicio">Inicio</a>
+                        <a
+                            class="font-semibold text-green-700 dark:text-green-400 border-b-2 border-green-700 dark:border-green-400 transition"
+                            href="#inicio"
+                            aria-current="page"
+                        >Inicio</a>
                         <a class="font-medium text-gray-600 dark:text-gray-300 hover:text-green-700 dark:hover:text-green-400 transition" href="/productos" @click.prevent="$emit('show-products')">Productos</a>
                         <a class="font-medium text-gray-600 dark:text-gray-300 hover:text-green-700 dark:hover:text-green-400 transition" href="#soluciones">Soluciones Agrícolas</a>
                         <a class="font-medium text-gray-600 dark:text-gray-300 hover:text-green-700 dark:hover:text-green-400 transition" href="#nosotros">Nosotros</a>
@@ -125,6 +133,7 @@
             </div>
         </Transition>
 
+        <main id="main-content">
         <!-- Hero Section with Slider -->
         <div id="inicio" class="relative bg-gray-900 overflow-hidden" @mouseenter="pauseAutoplay" @mouseleave="resumeAutoplay">
             <!-- Slider Container -->
@@ -137,11 +146,11 @@
                         :key="index"
                         class="absolute inset-0"
                     >
-                        <img
-                            :alt="slide.alt"
-                            class="w-full h-full object-cover object-center md:object-center"
-                            :src="slide.image"
-                        />
+                            <img
+                                :alt="slide.alt"
+                                class="w-full h-full object-cover object-center md:object-center"
+                                :src="slide.image"
+                            />
                         <div class="absolute inset-0 bg-gradient-to-r from-green-900/90 via-green-900/70 to-transparent dark:from-black/90 dark:via-black/70 mix-blend-multiply"></div>
                     </div>
                 </TransitionGroup>
@@ -155,12 +164,12 @@
                     data-aos-duration="1000"
                     class="mb-4 sm:mb-6"
                 >
-                    <img
-                        src="/images/logo.png"
-                        alt="GOLDfert Fertilizantes"
-                        class="h-36 sm:h-44 md:h-52 lg:h-60 w-auto object-contain brightness-110 contrast-110 drop-shadow-[0_0_25px_rgba(251,191,36,0.4)]"
-                        style="filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.3)) drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));"
-                    />
+                        <img
+                            src="/images/logo.png"
+                            alt="GOLDfert Fertilizantes - Logo principal"
+                            class="h-36 sm:h-44 md:h-52 lg:h-60 w-auto object-contain brightness-110 contrast-110 drop-shadow-[0_0_25px_rgba(251,191,36,0.4)]"
+                            style="filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.3)) drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));"
+                        />
                 </div>
 
                 <h1
@@ -361,6 +370,7 @@
                                 src="/images/portada1.2.1.png"
                                 alt="Productos GOLDfert: SULFERT, CALBORZINC y VITAL Mix en campo de cultivo"
                                 class="w-full h-auto object-cover brightness-105 contrast-110 saturate-110 transition-transform duration-500 group-hover:scale-105"
+                                loading="lazy"
                             />
                             <!-- Gradiente más sutil en móvil, más visible en desktop -->
                             <div class="absolute inset-0 bg-gradient-to-t from-green-900/30 via-green-900/10 via-70% to-transparent sm:from-green-900/60 sm:via-green-900/20 sm:via-60% dark:from-black/30 dark:via-black/5 dark:to-transparent sm:dark:from-black/50 sm:dark:via-black/10"></div>
@@ -518,21 +528,32 @@
                     <div class="relative">
                         <img
                             src="/images/logo.png"
-                            alt="GOLDfert Fertilizantes"
+                            alt="GOLDfert Fertilizantes - Marca de confianza"
                             class="h-20 sm:h-24 md:h-28 lg:h-32 w-auto object-contain drop-shadow-lg"
+                            loading="lazy"
                         />
                     </div>
                 </div>
 
                 <div class="relative">
                     <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-                        <img alt="Farm texture" class="w-full h-full object-cover rounded-3xl" src="/images/horizonte.png"/>
+                        <img
+                            alt="Paisaje agrícola horizonte de cultivo"
+                            class="w-full h-full object-cover rounded-3xl"
+                            src="/images/horizonte.png"
+                            loading="lazy"
+                        />
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
                         <div class="relative" data-aos="fade-right" data-aos-duration="1000">
                             <div class="absolute inset-0 bg-amber-500/20 rounded-3xl transform -rotate-3 z-0"></div>
-                            <img alt="Smiling agronomist with hat" class="relative z-10 rounded-3xl shadow-2xl border-4 border-white dark:border-gray-700" src="/images/fotofamiliar.jpeg"/>
+                            <img
+                                alt="Agrónomo y familia en campo de cultivo"
+                                class="relative z-10 rounded-3xl shadow-2xl border-4 border-white dark:border-gray-700"
+                                src="/images/fotofamiliar.jpeg"
+                                loading="lazy"
+                            />
                         </div>
 
                         <div class="space-y-10">
@@ -589,8 +610,9 @@
             <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-20 sm:opacity-25 md:opacity-30 pointer-events-none z-0">
                 <img
                     src="/images/logo.png"
-                    alt="GOLDfert"
+                    alt="GOLDfert - marca de agua decorativa"
                     class="w-64 sm:w-80 md:w-96 lg:w-[500px] h-auto object-contain brightness-150 contrast-125 drop-shadow-2xl"
+                    loading="lazy"
                 />
             </div>
 
@@ -631,11 +653,12 @@
                                         style="max-width: 100%; min-width: 325px;"
                                     >
                                         <section>
-                                            <a
-                                                :href="video.url"
-                                                target="_blank"
-                                                :title="video.title"
-                                            >{{ video.title }}</a>
+                                <a
+                                    :href="video.url"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    :title="video.title"
+                                >{{ video.title }}</a>
                                         </section>
                                     </blockquote>
                                 </template>
@@ -683,6 +706,7 @@
                                 <a
                                     :href="tiktokVideos[currentTikTokVideo].url"
                                     target="_blank"
+                                    rel="noopener noreferrer"
                                     class="inline-flex items-center gap-2 bg-gray-900 hover:bg-black text-white px-3 py-2 rounded-lg transition-all transform hover:scale-105 text-sm font-semibold"
                                 >
                                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -767,6 +791,7 @@
                         <a
                             :href="socialMedia.tiktok"
                             target="_blank"
+                            rel="noopener noreferrer"
                             class="inline-flex items-center gap-3 bg-white hover:bg-gray-50 text-gray-900 font-bold py-4 px-8 rounded-xl shadow-2xl transition-all transform hover:scale-105 border-2 border-gray-900"
                         >
                             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -843,6 +868,7 @@
             </div>
         </section>
 
+        </main>
         <!-- Footer -->
         <footer class="bg-green-900 dark:bg-black text-white">
             <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
