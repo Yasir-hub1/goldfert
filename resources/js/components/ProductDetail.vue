@@ -45,10 +45,10 @@
                         </div>
 
                         <!-- Badge de precio flotante -->
-                        <div class="absolute top-4 right-4 bg-gradient-to-r from-amber-500 to-amber-600 text-white px-5 py-3 rounded-xl shadow-2xl">
+                        <!-- <div class="absolute top-4 right-4 bg-gradient-to-r from-amber-500 to-amber-600 text-white px-5 py-3 rounded-xl shadow-2xl">
                             <div class="text-xs font-medium opacity-90 mb-1">Precio</div>
                             <div class="text-2xl sm:text-3xl font-bold">Bs. {{ formatPrice(product.precio) }}</div>
-                        </div>
+                        </div> -->
                     </div>
 
                     <!-- Información del producto -->
@@ -210,7 +210,7 @@ export default {
         whatsappLink() {
             if (!this.product) return '#';
             const phone = '+59171616724';
-            const message = `Hola, me interesa el producto *${this.product.nombre}* (${this.product.cultivo}) - Bs. ${this.formatPrice(this.product.precio)}`;
+            const message = `Hola, me interesa el producto *${this.product.nombre}*`;
             return `https://wa.me/${phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
         }
     },

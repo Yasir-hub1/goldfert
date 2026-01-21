@@ -298,7 +298,7 @@
                     <div v-if="product.descripcion" class="text-xs text-gray-500 mt-1 line-clamp-1">{{ product.descripcion }}</div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm font-bold text-blue-600">${{ product.precio }}</div>
+                    <div class="text-sm font-bold text-blue-600">Bs. {{ product.precio }}</div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="text-sm text-gray-900">{{ product.dosis }}</div>
@@ -834,29 +834,29 @@ export default {
     const compressImage = (file, maxWidth = 1920, maxHeight = 1920, quality = 0.8, maxSizeMB = 5) => {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
-        
+
         reader.onload = (e) => {
           const img = new Image();
-          
+
           img.onload = () => {
             // Calcular nuevas dimensiones manteniendo proporción
             let width = img.width;
             let height = img.height;
-            
+
             if (width > maxWidth || height > maxHeight) {
               const ratio = Math.min(maxWidth / width, maxHeight / height);
               width = width * ratio;
               height = height * ratio;
             }
-            
+
             // Crear canvas
             const canvas = document.createElement('canvas');
             canvas.width = width;
             canvas.height = height;
-            
+
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, width, height);
-            
+
             // Convertir a blob con compresión
             canvas.toBlob(
               (blob) => {
@@ -864,7 +864,7 @@ export default {
                   reject(new Error('Error al comprimir la imagen'));
                   return;
                 }
-                
+
                 // Si el blob es muy grande, reducir más la calidad
                 const blobSizeMB = blob.size / (1024 * 1024);
                 if (blobSizeMB > maxSizeMB) {
@@ -888,18 +888,18 @@ export default {
               quality
             );
           };
-          
+
           img.onerror = () => {
             reject(new Error('Error al cargar la imagen'));
           };
-          
+
           img.src = e.target.result;
         };
-        
+
         reader.onerror = () => {
           reject(new Error('Error al leer el archivo'));
         };
-        
+
         reader.readAsDataURL(file);
       });
     };
@@ -947,7 +947,7 @@ export default {
         }
 
         form.foto = processedFile;
-        
+
         // Mostrar preview
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -958,7 +958,7 @@ export default {
           event.target.value = '';
         };
         reader.readAsDataURL(processedFile);
-        
+
         if (file.size <= 2 * 1024 * 1024) {
           toast.success('Imagen seleccionada correctamente.');
         }
@@ -1055,11 +1055,11 @@ export default {
       try {
         const formData = new FormData();
         formData.append('nombre', form.nombre.trim());
-        
+
         // Precio: usar 0 si está vacío o null, de lo contrario usar el valor parseado
         const precio = form.precio === '' || form.precio === null ? 0 : parseFloat(form.precio);
         formData.append('precio', precio);
-        
+
         // Campos opcionales: solo agregar si tienen valor
         if (form.dosis && form.dosis.trim() !== '') {
           formData.append('dosis', form.dosis.trim());
@@ -1073,7 +1073,7 @@ export default {
         if (form.etapa && form.etapa.trim() !== '') {
           formData.append('etapa', form.etapa.trim());
         }
-        
+
         formData.append('enabled', form.enabled ? '1' : '0');
         if (form.foto) {
           formData.append('foto', form.foto);
@@ -1121,12 +1121,12 @@ export default {
         closeModal();
       } catch (error) {
         console.error('Error al guardar producto:', error);
-        
+
         // Manejar diferentes tipos de errores
         if (error.response) {
           const status = error.response.status;
           const data = error.response.data;
-          
+
           if (status === 422 && data.errors) {
             // Errores de validación
             const errors = data.errors;

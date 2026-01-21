@@ -135,9 +135,9 @@
                         </div>
 
                         <!-- Badge de precio -->
-                        <div class="absolute top-3 right-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white px-3 py-1.5 rounded-lg font-bold text-sm shadow-lg">
+                        <!-- <div class="absolute top-3 right-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white px-3 py-1.5 rounded-lg font-bold text-sm shadow-lg">
                             Bs. {{ formatPrice(product.precio) }}
-                        </div>
+                        </div> -->
                     </div>
 
                     <!-- Información del producto -->
