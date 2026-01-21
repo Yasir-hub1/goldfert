@@ -473,7 +473,7 @@
 
                 <div>
                   <label class="block text-sm font-semibold text-gray-700 mb-2">
-                    Precio <span class="text-red-500">*</span>
+                    Precio
                   </label>
                   <div class="relative">
                     <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">Bs.</span>
@@ -482,7 +482,6 @@
                     type="number"
                     step="0.01"
                     min="0"
-                    required
                       class="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
                       placeholder="0.00"
                   />
@@ -491,12 +490,11 @@
 
                 <div>
                   <label class="block text-sm font-semibold text-gray-700 mb-2">
-                    Dosis <span class="text-red-500">*</span>
+                    Dosis
                   </label>
                   <input
                     v-model="form.dosis"
                     type="text"
-                    required
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
                     placeholder="Ej: 2kg/ha"
                   />
@@ -504,12 +502,11 @@
 
                 <div>
                   <label class="block text-sm font-semibold text-gray-700 mb-2">
-                    Cultivo <span class="text-red-500">*</span>
+                    Cultivo
                   </label>
                   <input
                     v-model="form.cultivo"
                     type="text"
-                    required
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
                     placeholder="Ej: Maíz"
                   />
@@ -517,12 +514,11 @@
 
                 <div>
                   <label class="block text-sm font-semibold text-gray-700 mb-2">
-                    Etapa <span class="text-red-500">*</span>
+                    Etapa
                   </label>
                   <input
                     v-model="form.etapa"
                     type="text"
-                    required
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
                     placeholder="Ej: Crecimiento"
                   />
@@ -557,7 +553,7 @@
               <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-2">
                   Foto del Producto
-                  <span class="text-gray-500 text-xs font-normal ml-2">(Máximo 10MB - JPEG, PNG, JPG, GIF, WEBP)</span>
+                  <span class="text-gray-500 text-xs font-normal ml-2">(Máximo 25MB - Se comprimirá automáticamente a 800px máximo)</span>
                 </label>
                 <div class="mt-2">
                   <label class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
@@ -752,7 +748,7 @@ export default {
 
     const form = reactive({
       nombre: '',
-      precio: '',
+      precio: 0,
       dosis: '',
       descripcion: '',
       cultivo: '',
@@ -834,32 +830,142 @@ export default {
       }
     };
 
-    const handleFileChange = (event) => {
+    // Función para comprimir imagen usando Canvas API
+    const compressImage = (file, maxWidth = 1920, maxHeight = 1920, quality = 0.8, maxSizeMB = 5) => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        
+        reader.onload = (e) => {
+          const img = new Image();
+          
+          img.onload = () => {
+            // Calcular nuevas dimensiones manteniendo proporción
+            let width = img.width;
+            let height = img.height;
+            
+            if (width > maxWidth || height > maxHeight) {
+              const ratio = Math.min(maxWidth / width, maxHeight / height);
+              width = width * ratio;
+              height = height * ratio;
+            }
+            
+            // Crear canvas
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            
+            // Convertir a blob con compresión
+            canvas.toBlob(
+              (blob) => {
+                if (!blob) {
+                  reject(new Error('Error al comprimir la imagen'));
+                  return;
+                }
+                
+                // Si el blob es muy grande, reducir más la calidad
+                const blobSizeMB = blob.size / (1024 * 1024);
+                if (blobSizeMB > maxSizeMB) {
+                  // Reducir calidad y volver a comprimir
+                  canvas.toBlob(
+                    (smallerBlob) => {
+                      if (!smallerBlob) {
+                        reject(new Error('Error al comprimir la imagen'));
+                        return;
+                      }
+                      resolve(smallerBlob);
+                    },
+                    'image/jpeg',
+                    Math.max(0.5, quality * 0.7) // Reducir calidad
+                  );
+                } else {
+                  resolve(blob);
+                }
+              },
+              'image/jpeg',
+              quality
+            );
+          };
+          
+          img.onerror = () => {
+            reject(new Error('Error al cargar la imagen'));
+          };
+          
+          img.src = e.target.result;
+        };
+        
+        reader.onerror = () => {
+          reject(new Error('Error al leer el archivo'));
+        };
+        
+        reader.readAsDataURL(file);
+      });
+    };
+
+    const handleFileChange = async (event) => {
       const file = event.target.files[0];
-      if (file) {
-        // Validar tamaño (10MB = 10485760 bytes)
-        const maxSize = 10 * 1024 * 1024;
-        if (file.size > maxSize) {
-          toast.error('La imagen no puede exceder 10MB de tamaño.');
-          event.target.value = '';
-          return;
+      if (!file) return;
+
+      // Validar tamaño (25MB = 26214400 bytes)
+      const maxSize = 25 * 1024 * 1024;
+      if (file.size > maxSize) {
+        toast.error('La imagen no puede exceder 25MB de tamaño.');
+        event.target.value = '';
+        return;
+      }
+
+      // Validar tipo de archivo
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp'];
+      if (!allowedTypes.includes(file.type)) {
+        toast.error('El archivo debe ser una imagen válida (JPEG, PNG, JPG, GIF o WEBP).');
+        event.target.value = '';
+        return;
+      }
+
+      try {
+        // Mostrar advertencia si la imagen es grande
+        if (file.size > 2 * 1024 * 1024) {
+          const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+          toast.warning(`Comprimiendo imagen grande (${sizeMB}MB)...`);
         }
 
-        // Validar tipo de archivo
-        const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp'];
-        if (!allowedTypes.includes(file.type)) {
-          toast.error('El archivo debe ser una imagen válida (JPEG, PNG, JPG, GIF o WEBP).');
-          event.target.value = '';
-          return;
+        // Comprimir imagen si es mayor a 2MB
+        let processedFile = file;
+        if (file.size > 2 * 1024 * 1024) {
+          try {
+            processedFile = await compressImage(file, 1920, 1920, 0.85, 5);
+            const originalSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+            const compressedSizeMB = (processedFile.size / (1024 * 1024)).toFixed(2);
+            toast.success(`Imagen comprimida: ${originalSizeMB}MB → ${compressedSizeMB}MB`);
+          } catch (compressError) {
+            console.error('Error al comprimir:', compressError);
+            toast.warning('No se pudo comprimir la imagen. Se enviará la imagen original.');
+            processedFile = file;
+          }
         }
 
-        form.foto = file;
+        form.foto = processedFile;
+        
+        // Mostrar preview
         const reader = new FileReader();
         reader.onload = (e) => {
           form.fotoPreview = e.target.result;
         };
-        reader.readAsDataURL(file);
-        toast.success('Imagen seleccionada correctamente.');
+        reader.onerror = () => {
+          toast.error('Error al leer la imagen. Por favor, intenta con otra imagen.');
+          event.target.value = '';
+        };
+        reader.readAsDataURL(processedFile);
+        
+        if (file.size <= 2 * 1024 * 1024) {
+          toast.success('Imagen seleccionada correctamente.');
+        }
+      } catch (error) {
+        console.error('Error al procesar imagen:', error);
+        toast.error('Error al procesar la imagen. Por favor, intenta con otra imagen.');
+        event.target.value = '';
       }
     };
 
@@ -893,7 +999,7 @@ export default {
 
     const resetForm = () => {
       form.nombre = '';
-      form.precio = '';
+      form.precio = 0;
       form.dosis = '';
       form.descripcion = '';
       form.cultivo = '';
@@ -912,12 +1018,12 @@ export default {
 
     const editProduct = (product) => {
       editingId.value = product.id;
-      form.nombre = product.nombre;
-      form.precio = product.precio;
-      form.dosis = product.dosis;
+      form.nombre = product.nombre || '';
+      form.precio = product.precio !== null && product.precio !== undefined ? product.precio : 0;
+      form.dosis = product.dosis || '';
       form.descripcion = product.descripcion || '';
-      form.cultivo = product.cultivo;
-      form.etapa = product.etapa;
+      form.cultivo = product.cultivo || '';
+      form.etapa = product.etapa || '';
       form.enabled = product.enabled;
       if (product.foto) {
         form.fotoPreview = `/storage/${product.foto}`;
@@ -927,24 +1033,14 @@ export default {
     };
 
     const validateForm = () => {
+      // Solo el nombre es obligatorio
       if (!form.nombre || form.nombre.trim() === '') {
         toast.warning('El nombre del producto es obligatorio.');
         return false;
       }
-      if (!form.precio || isNaN(parseFloat(form.precio)) || parseFloat(form.precio) < 0) {
-        toast.warning('El precio es obligatorio y debe ser un número válido mayor o igual a 0.');
-        return false;
-      }
-      if (!form.dosis || form.dosis.trim() === '') {
-        toast.warning('La dosis es obligatoria.');
-        return false;
-      }
-      if (!form.cultivo || form.cultivo.trim() === '') {
-        toast.warning('El cultivo es obligatorio.');
-        return false;
-      }
-      if (!form.etapa || form.etapa.trim() === '') {
-        toast.warning('La etapa es obligatoria.');
+      // Validar precio solo si se proporciona (debe ser un número válido >= 0)
+      if (form.precio !== '' && form.precio !== null && (isNaN(parseFloat(form.precio)) || parseFloat(form.precio) < 0)) {
+        toast.warning('El precio debe ser un número válido mayor o igual a 0.');
         return false;
       }
       return true;
@@ -959,31 +1055,64 @@ export default {
       try {
         const formData = new FormData();
         formData.append('nombre', form.nombre.trim());
-        formData.append('precio', parseFloat(form.precio));
-        formData.append('dosis', form.dosis.trim());
-        formData.append('descripcion', (form.descripcion || '').trim());
-        formData.append('cultivo', form.cultivo.trim());
-        formData.append('etapa', form.etapa.trim());
+        
+        // Precio: usar 0 si está vacío o null, de lo contrario usar el valor parseado
+        const precio = form.precio === '' || form.precio === null ? 0 : parseFloat(form.precio);
+        formData.append('precio', precio);
+        
+        // Campos opcionales: solo agregar si tienen valor
+        if (form.dosis && form.dosis.trim() !== '') {
+          formData.append('dosis', form.dosis.trim());
+        }
+        if (form.descripcion && form.descripcion.trim() !== '') {
+          formData.append('descripcion', form.descripcion.trim());
+        }
+        if (form.cultivo && form.cultivo.trim() !== '') {
+          formData.append('cultivo', form.cultivo.trim());
+        }
+        if (form.etapa && form.etapa.trim() !== '') {
+          formData.append('etapa', form.etapa.trim());
+        }
+        
         formData.append('enabled', form.enabled ? '1' : '0');
         if (form.foto) {
           formData.append('foto', form.foto);
         }
 
+        // Mostrar advertencia si hay una imagen grande siendo procesada
+        if (form.foto && form.foto.size > 5 * 1024 * 1024) {
+          toast.warning('Procesando imagen grande. Esto puede tardar unos momentos...');
+        }
+
         if (editingId.value) {
+          // Usar POST con _method spoofing para mayor compatibilidad con FormData
+          // Laravel procesará el _method en el FormData
           formData.append('_method', 'PUT');
           const response = await axios.post(`/api/products/${editingId.value}`, formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
             withCredentials: true,
+            onUploadProgress: (progressEvent) => {
+              if (form.foto && form.foto.size > 5 * 1024 * 1024) {
+                const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                // Solo mostrar progreso cada 25% para no saturar
+                if (percentCompleted % 25 === 0 || percentCompleted === 100) {
+                  console.log(`Subiendo imagen: ${percentCompleted}%`);
+                }
+              }
+            },
           });
           toast.success(response.data.message || 'Producto actualizado exitosamente.');
         } else {
           const response = await axios.post('/api/products', formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
             withCredentials: true,
+            onUploadProgress: (progressEvent) => {
+              if (form.foto && form.foto.size > 5 * 1024 * 1024) {
+                const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                // Solo mostrar progreso cada 25% para no saturar
+                if (percentCompleted % 25 === 0 || percentCompleted === 100) {
+                  console.log(`Subiendo imagen: ${percentCompleted}%`);
+                }
+              }
+            },
           });
           toast.success(response.data.message || 'Producto creado exitosamente.');
         }
@@ -992,19 +1121,54 @@ export default {
         closeModal();
       } catch (error) {
         console.error('Error al guardar producto:', error);
-        if (error.response && error.response.data) {
-          if (error.response.data.errors) {
-            const errors = error.response.data.errors;
+        
+        // Manejar diferentes tipos de errores
+        if (error.response) {
+          const status = error.response.status;
+          const data = error.response.data;
+          
+          if (status === 422 && data.errors) {
+            // Errores de validación
+            const errors = data.errors;
             Object.keys(errors).forEach((field) => {
               errors[field].forEach((message) => {
                 toast.error(message);
               });
             });
+          } else if (status === 413) {
+            // Error de tamaño de archivo (Request Entity Too Large)
+            toast.error('La imagen es demasiado grande. Por favor, comprime la imagen antes de subirla o intenta con una imagen más pequeña.');
+          } else if (data && data.message) {
+            // Verificar si el mensaje contiene información sobre POST demasiado grande
+            const errorMessage = data.message.toLowerCase();
+            if (errorMessage.includes('post') && (errorMessage.includes('too large') || errorMessage.includes('too big') || errorMessage.includes('exceeds'))) {
+              toast.error('La imagen es demasiado grande para enviar. Por favor, comprime la imagen antes de subirla. La imagen debería comprimirse automáticamente, pero si el problema persiste, intenta con una imagen más pequeña.');
+            } else {
+              toast.error(data.message);
+            }
           } else {
-            toast.error(error.response.data.message || 'Error al guardar el producto.');
+            toast.error('Error al guardar el producto. Por favor, intenta de nuevo.');
+          }
+        } else if (error.request) {
+          // Error de red o timeout
+          if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+            toast.error('La operación está tardando demasiado. Por favor, intenta con una imagen más pequeña o verifica tu conexión.');
+          } else {
+            toast.error('Error de conexión. Por favor, verifica tu conexión a internet e intenta de nuevo.');
+          }
+        } else if (error.message) {
+          // Error con mensaje específico
+          const errorMsg = error.message.toLowerCase();
+          if (errorMsg.includes('network') || errorMsg.includes('fetch')) {
+            toast.error('Error de conexión. Por favor, verifica tu conexión a internet e intenta de nuevo.');
+          } else if (errorMsg.includes('size') || errorMsg.includes('large') || errorMsg.includes('big')) {
+            toast.error('La imagen es demasiado grande. Por favor, intenta con una imagen más pequeña.');
+          } else {
+            toast.error(`Error: ${error.message}`);
           }
         } else {
-          toast.error('Error de conexión. Por favor, verifica tu conexión a internet e intenta de nuevo.');
+          // Error desconocido
+          toast.error('Error inesperado. Por favor, intenta de nuevo. Si el problema persiste, verifica que la imagen no sea demasiado grande.');
         }
       } finally {
         saving.value = false;

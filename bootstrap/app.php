@@ -20,14 +20,23 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Session\Middleware\StartSession::class,
         ]);
 
-        // Excluir verificación CSRF de rutas API de autenticación
+        // Excluir verificación CSRF de todas las rutas API
+        // Las rutas API usan autenticación basada en sesiones pero no requieren CSRF
         $middleware->validateCsrfTokens(except: [
-            'api/login',
+            'api/*',
         ]);
 
         // Asegurar que las cookies no se cifren para facilitar debugging (opcional)
         $middleware->encryptCookies(except: []);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        // Manejar excepciones de POST demasiado grande con mensaje amigable
+        $exceptions->render(function (\Illuminate\Http\Exceptions\PostTooLargeException $e, $request) {
+            if ($request->expectsJson() || $request->is('api/*')) {
+                return response()->json([
+                    'message' => 'La imagen es demasiado grande para enviar. Por favor, comprime la imagen antes de subirla o intenta con una imagen más pequeña (máximo 25MB).',
+                    'error' => 'POST data too large'
+                ], 413);
+            }
+        });
     })->create();
